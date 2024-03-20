@@ -5,6 +5,7 @@ import { Box, Grid } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import ReportsoneTabal from '@/component/ReportsAgents/ReportsAgentsOneTabal';
 import DealsAgentsTabal from '@/component/DealsAgents/DealsAgentsTabal';
+import DateAndSelect from '@/component/dashboard/DateAndSelect';
 
 export default function Dealsagents() {
 
@@ -20,7 +21,7 @@ export default function Dealsagents() {
         <div>
           <Box>
             <Typography className="def_had_txt">Deals (for agents)</Typography>
-            {/* <DateAndSelect /> */}
+            <DateAndSelect />
             <DealsAgentsTabal />
           </Box>
         </div>

@@ -13,7 +13,7 @@ const columns: GridColDef[] = [
         return (
           <div className="userBox">
             <Button className='edt_btn_ic'><CreateIcon /></Button>
-            <Button className='edt_btn_ic delet_btn_ic '><DeleteIcon /></Button>
+            <Button className='edt_btn_ic delet_btn_ic'><DeleteIcon /></Button>
           </div>
         );
         }, headerName: 'Action', width: 300 },

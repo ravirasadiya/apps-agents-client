@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import PlayerResultsAgents from '@/component/PlayerResults/PlayerResultsAgents';
+import DateAndSelect from '@/component/dashboard/DateAndSelect';
 
 
 export default function PlayerResults() {
@@ -46,6 +47,8 @@ export default function PlayerResults() {
                 </Select>
               </FormControl>
             </Box>
+            <DateAndSelect />
+
 
             <Grid container spacing={[2, 3, 3]} className='selct_grid'>
               <Grid item xs={12} sm={6} md={6} xl={4} >

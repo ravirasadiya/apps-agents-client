@@ -13,6 +13,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
 import SettlementsTabal from '@/component/Settlements/SettlementsTabal';
+import DateAndSelect from '@/component/dashboard/DateAndSelect';
 
 
 
@@ -72,6 +73,7 @@ export default function Settlements() {
               <Typography className="def_had_txt">Settlements</Typography>
               <Button onClick={handleClickOpen}>Add Aettlement</Button>
             </Box>
+            <DateAndSelect />
             <SettlementsTabal />
           </Box>
         </div>
@@ -89,6 +91,7 @@ export default function Settlements() {
           <Box className="sign">
             <Box className="sign_min">
               <Typography component={"h2"} className='def_h2_hd mrg_colr'>Add Settlements</Typography>
+
               <Box className="flx_log_input">
                 <Box component="form">
                   <Box className="date_min_prnt">

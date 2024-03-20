@@ -13,6 +13,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
 import SettingsOneTabal from '@/component/Settings/SettingsOneTabal';
+import DateAndSelect from '@/component/dashboard/DateAndSelect';
 
 
 
@@ -72,6 +73,7 @@ export default function Settlements() {
               <Typography className="def_had_txt">Settings</Typography>
               <Button onClick={handleClickOpen}>Add Player</Button>
             </Box>
+            <DateAndSelect />
 
             <Box className="user_info_min" >              
               <Typography component="h2" className=''>User information</Typography>

@@ -22,21 +22,7 @@ export default function DateAndSelect() {
     //datepicker
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
-    const range = {
-        Today: [moment(), moment()],
-        Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [
-            moment().subtract(1, 'month').startOf('month'),
-            moment().subtract(1, 'month').endOf('month'),
-        ],
-        'Last Year': [
-            moment().subtract(1, 'year').startOf('year'),
-            moment().subtract(1, 'year').endOf('year'),
-        ],
-    };
+   
 
     const handleEvent = (event: any, picker: any) => {
         setFromDate(picker.startDate._d.toISOString());
@@ -47,10 +33,7 @@ export default function DateAndSelect() {
         <>
             <Box className="date_min_prnt">
                 <DateRangePicker
-                    // startDate={new Date()}
-                    // endDate={new Date()}
-                    ranges={range}
-                    alwaysShowCalendars={true}
+                    initialSettings={{ startDate: '1/1/2014', endDate: '3/1/2014' }}
                     onEvent={handleEvent}
                 >
                     <button className='def_date_pickr'>

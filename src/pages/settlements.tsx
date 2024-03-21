@@ -3,7 +3,6 @@ import Head from "next/head";
 import Layout from "@/component/layouts/Layout";
 import { Box, Button, Grid, Modal } from "@mui/material";
 import Typography from '@mui/material/Typography';
-import moment from 'moment';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
@@ -13,6 +12,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
 import SettlementsTabal from '@/component/Settlements/SettlementsTabal';
+import DateAndSelect from '@/component/dashboard/DateAndSelect';
+import moment from 'moment';
 
 
 
@@ -26,21 +27,7 @@ export default function Settlements() {
   //datepicker
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
-  const range = {
-    Today: [moment(), moment()],
-    Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [
-      moment().subtract(1, 'month').startOf('month'),
-      moment().subtract(1, 'month').endOf('month'),
-    ],
-    'Last Year': [
-      moment().subtract(1, 'year').startOf('year'),
-      moment().subtract(1, 'year').endOf('year'),
-    ],
-  };
+  
 
   const handleEvent = (event: any, picker: any) => {
     setFromDate(picker.startDate._d.toISOString());
@@ -72,6 +59,7 @@ export default function Settlements() {
               <Typography className="def_had_txt">Settlements</Typography>
               <Button onClick={handleClickOpen}>Add Aettlement</Button>
             </Box>
+            <DateAndSelect />
             <SettlementsTabal />
           </Box>
         </div>
@@ -89,12 +77,12 @@ export default function Settlements() {
           <Box className="sign">
             <Box className="sign_min">
               <Typography component={"h2"} className='def_h2_hd mrg_colr'>Add Settlements</Typography>
+
               <Box className="flx_log_input">
                 <Box component="form">
                   <Box className="date_min_prnt">
                     <DateRangePicker
-                      ranges={range}
-                      alwaysShowCalendars={true}
+                      initialSettings={{ startDate: '1/1/2014', endDate: '3/1/2014' }}
                       onEvent={handleEvent}
                     >
                       <button className='def_date_pickr'>

@@ -1,43 +1,42 @@
-import React from 'react'
-import { Box, Typography } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Menu() {
-    const router = useRouter()
+  const router = useRouter();
   return (
-    <>
-    <Box className='draw_link'>
-      <Box className='agent_arow'>
+    <Box className="draw_link">
+      <Box className="agent_arow">
         <Typography>Agent</Typography>
         <KeyboardArrowDownIcon />
       </Box>
-      <ul className='draw_ul'>
-        <li className={router.pathname == '/' ? 'active' : ''}>
+      <ul className="draw_ul">
+        <li className={router.pathname == "/" ? "active" : ""}>
           <Link href="/">Summary</Link>
         </li>
-        <li className={router.pathname == '/reports-agents' ? 'active' : ''}>
+        <li className={router.pathname == "/reports-agents" ? "active" : ""}>
           <Link href="/reports-agents">Reports</Link>
         </li>
-        <li className={router.pathname == '/deals-agents' ? 'active' : ''}>
+        <li className={router.pathname == "/deals-agents" ? "active" : ""}>
           <Link href="/deals-agents">Deals</Link>
         </li>
-        <li className={router.pathname == '/player-results' ? 'active' : ''}>
+        <li className={router.pathname == "/player-results" ? "active" : ""}>
           <Link href="/player-results">Player Results</Link>
         </li>
-        <li className={router.pathname == '/settlements' ? 'active' : ''}>
+        <li className={router.pathname == "/settlements" ? "active" : ""}>
           <Link href="/settlements">Settlements</Link>
         </li>
-        <li className={router.pathname == '/settings' ? 'active' : ''}>
+        <li className={router.pathname == "/settings" ? "active" : ""}>
           <Link href="/settings">Settings</Link>
         </li>
       </ul>
-      <Box className='agent_arow'>
-        <Typography>Player</Typography>
+      <Box className="agent_arow">
+        <Typography>Players</Typography>
         <KeyboardArrowDownIcon />
       </Box>
-      <ul className='draw_ul'>
+      <ul className="draw_ul">
         <li>
           <Link href="">Summary</Link>
         </li>
@@ -54,11 +53,6 @@ export default function Menu() {
           <Link href="">Settings</Link>
         </li>
       </ul>
-      <Link href="/" className='agent_arow agent_arow_v2'>
-        <Typography>Player</Typography>
-        <KeyboardArrowDownIcon />
-      </Link>
     </Box>
-    </>
-  )
+  );
 }

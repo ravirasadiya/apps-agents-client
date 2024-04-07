@@ -1,9 +1,18 @@
+import { ClubResponse, ClubResult } from "@/interfaces/club-list";
+import { EndpointUrl, endpointUrls, getRecords } from "@/pages/helper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Box, SelectChangeEvent } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Grid,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import "bootstrap/dist/css/bootstrap.css";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 
 // import FormControl from "@mui/material/FormControl";
@@ -13,35 +22,59 @@ import DateRangePicker from "react-bootstrap-daterangepicker";
 // import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export default function DateAndSelect() {
-  const [age, setAge] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
-  };
-
   //datepicker
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  const [fromDate, setFromDate] = useState(
+    moment(new Date()).subtract(1, "month").toDate()
+  );
+  const [toDate, setToDate] = useState(moment(new Date()).toDate());
+  const componentMounted = useRef(false);
+
+  const [clubs, setClubs] = useState<ClubResult[]>([]);
+  const [selectedClub, setSelectedClub] = useState("");
 
   const handleEvent = (event: any, picker: any) => {
     setFromDate(picker.startDate._d.toISOString());
     setToDate(picker.endDate._d.toISOString());
   };
 
+  useEffect(() => {
+    if (!componentMounted.current) {
+      getRecords(endpointUrls[EndpointUrl.CLUB_LIST])
+        .then((response: ClubResponse) => {
+          const { results } = response ?? { count: 0, results: [] };
+          setClubs(results);
+          setSelectedClub(results?.[0]?.club);
+        })
+        .catch((e: any) => {
+          console.log("ERROR...", e);
+        });
+      componentMounted.current = true;
+    }
+  });
+
+  const handleOnClubChange = (event: any) => {
+    setSelectedClub(event?.target?.value || clubs?.[0]);
+  };
+
   return (
-    <Box className="date_min_prnt selct_minbx">
-      <DateRangePicker
-        initialSettings={{ startDate: "1/1/2014", endDate: "3/1/2014" }}
-        onEvent={handleEvent}
-      >
-        <button className="def_date_pickr">
-          {moment(fromDate).format("LL")}
-          &nbsp; - &nbsp;
-          {moment(toDate).format("LL")}
-          <KeyboardArrowDownIcon />
-        </button>
-      </DateRangePicker>
-      {/* [TODO] Hide as per the client's comment
+    <Grid container spacing={[2]} className="selct_grid selct_minbx">
+      <Grid item xs={12} md={8} xl={3}>
+        <span>Date</span>
+        <Box className="date_min_prnt">
+          <DateRangePicker
+            initialSettings={{ startDate: fromDate, endDate: toDate }}
+            onEvent={handleEvent}
+          >
+            <button className="def_date_pickr">
+              {moment(fromDate).format("LL")}
+              &nbsp; - &nbsp;
+              {moment(toDate).format("LL")}
+              <KeyboardArrowDownIcon />
+            </button>
+          </DateRangePicker>
+
+          {/* 
+        [TODO] Hide as per the client's comment
          <Box className='selct_minbx'>
                     <Grid container spacing={[3, 3, 3]} className='selct_grid'>
                         <Grid item xs={6} md={4} xl={2} >
@@ -160,6 +193,24 @@ export default function DateAndSelect() {
                         </Grid>
                     </Grid>
                 </Box> */}
-    </Box>
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={8} xl={3}>
+        <FormControl className="def_selct">
+          <span>Clubs</span>
+          <Select
+            value={selectedClub}
+            onChange={handleOnClubChange}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+            className="selct"
+          >
+            {clubs.map((item, index) => (
+              <MenuItem value={item.club}>{item.club}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+    </Grid>
   );
 }

@@ -1,49 +1,48 @@
-import React, { Component, useState } from 'react';
-import "bootstrap/dist/css/bootstrap.css";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { Box, SelectChangeEvent } from "@mui/material";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import DateRangePicker from 'react-bootstrap-daterangepicker';
-import moment from 'moment';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box, Button, Grid } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import "bootstrap/dist/css/bootstrap.css";
+import moment from "moment";
+import React, { useState } from "react";
+import DateRangePicker from "react-bootstrap-daterangepicker";
 
+// import FormControl from "@mui/material/FormControl";
+// import InputLabel from "@mui/material/InputLabel";
+// import MenuItem from "@mui/material/MenuItem";
+// import FormHelperText from "@mui/material/FormHelperText";
+// import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export default function DateAndSelect() {
-    const [age, setAge] = React.useState('');
+  const [age, setAge] = React.useState("");
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
-    };
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value);
+  };
 
-    //datepicker
-    const [fromDate, setFromDate] = useState(new Date());
-    const [toDate, setToDate] = useState(new Date());
-   
+  //datepicker
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
 
-    const handleEvent = (event: any, picker: any) => {
-        setFromDate(picker.startDate._d.toISOString());
-        setToDate(picker.endDate._d.toISOString());
-    };
+  const handleEvent = (event: any, picker: any) => {
+    setFromDate(picker.startDate._d.toISOString());
+    setToDate(picker.endDate._d.toISOString());
+  };
 
-    return (
-        <>
-            <Box className="date_min_prnt">
-                <DateRangePicker
-                    initialSettings={{ startDate: '1/1/2014', endDate: '3/1/2014' }}
-                    onEvent={handleEvent}
-                >
-                    <button className='def_date_pickr'>
-                        {moment(fromDate).format('LL')}
-                        &nbsp; - &nbsp;
-                        {moment(toDate).format('LL')}
-                        <KeyboardArrowDownIcon />
-                    </button>
-                </DateRangePicker>
-                <Box className='selct_minbx'>
+  return (
+    <Box className="date_min_prnt selct_minbx">
+      <DateRangePicker
+        initialSettings={{ startDate: "1/1/2014", endDate: "3/1/2014" }}
+        onEvent={handleEvent}
+      >
+        <button className="def_date_pickr">
+          {moment(fromDate).format("LL")}
+          &nbsp; - &nbsp;
+          {moment(toDate).format("LL")}
+          <KeyboardArrowDownIcon />
+        </button>
+      </DateRangePicker>
+      {/* [TODO] Hide as per the client's comment
+         <Box className='selct_minbx'>
                     <Grid container spacing={[3, 3, 3]} className='selct_grid'>
                         <Grid item xs={6} md={4} xl={2} >
                             <FormControl className='def_selct'>
@@ -160,8 +159,7 @@ export default function DateAndSelect() {
                             </FormControl>
                         </Grid>
                     </Grid>
-                </Box>
-            </Box>
-        </>
-    )
+                </Box> */}
+    </Box>
+  );
 }

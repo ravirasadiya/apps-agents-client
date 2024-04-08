@@ -23,3 +23,5 @@ export const endpointUrls: Record<EndpointUrl, string> = {
   [EndpointUrl.CLUB_LIST]: `${domainWithOutVersion}/views/agents-summary/clubs-list/`,
   [EndpointUrl.ME]: `${domainWithOutVersion}/user/me`,
 };
+
+export default { EndpointUrl, endpointUrls };

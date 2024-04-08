@@ -42,7 +42,7 @@ export const getRecords = async (apiUrl: string, options?: any) => {
     });
 };
 
-// [TODO] Need to verify the error response of the 
+// [TODO] Need to verify the error response of the
 // data.
 export const saveRecord = async (apiUrl: string, options?: any) => {
   return await axios
@@ -64,4 +64,10 @@ export const updateRecord = async (apiUrl: string, options?: any) => {
     .catch(function (error) {
       console.error(error);
     });
+};
+
+export default {
+  getRecords,
+  saveRecord,
+  updateRecord,
 };

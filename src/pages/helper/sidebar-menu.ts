@@ -1,4 +1,4 @@
-export const menuItems = [
+const menuItems = [
   {
     title: "Agent",
     index: 0,
@@ -93,3 +93,5 @@ export const menuItems = [
     ],
   },
 ];
+
+export default { menuItems };

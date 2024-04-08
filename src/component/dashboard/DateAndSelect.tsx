@@ -22,8 +22,10 @@ import React, { useEffect, useRef, useState } from "react";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import {
   currentDate,
+  currentDateInFormat,
   getDateFromISOString,
   getDateOfBeforeOneMonth,
+  getDateOfBeforeOneMonthInFormat,
 } from "@/utils/get-date";
 
 // import FormControl from "@mui/material/FormControl";
@@ -32,10 +34,21 @@ import {
 // import FormHelperText from "@mui/material/FormHelperText";
 // import Select, { SelectChangeEvent } from "@mui/material/Select";
 
+export interface Filters {
+  startDate: string;
+  endDate: string;
+  club: string;
+}
+
 export default function DateAndSelect() {
   //datepicker
   const [fromDate, setFromDate] = useState(getDateOfBeforeOneMonth());
   const [toDate, setToDate] = useState(currentDate());
+  const [filters, setFilters] = useState({
+    startDate: getDateOfBeforeOneMonthInFormat(),
+    endDate: currentDateInFormat(),
+    club: "",
+  });
   const componentMounted = useRef(false);
 
   const [clubs, setClubs] = useState<ClubResult[]>([]);
@@ -44,11 +57,16 @@ export default function DateAndSelect() {
   const handleEvent = (event: any, picker: any) => {
     setFromDate(picker.startDate._d);
     setToDate(picker.endDate._d);
-    const filters = {
+    const updatedFilters: Filters = {
+      ...filters,
       startDate: getDateFromISOString(new Date(picker.startDate._d)),
       endDate: getDateFromISOString(new Date(picker.endDate._d)),
     };
+    updateFilters(updatedFilters);
+  };
 
+  const updateFilters = (filters: Filters) => {
+    setFilters(filters);
     setLocalStorage(LocalStorageKeys.filterProperties, filters);
   };
 
@@ -68,13 +86,18 @@ export default function DateAndSelect() {
   });
 
   const handleOnClubChange = (event: any) => {
+    const updatedFilters: Filters = {
+      ...filters,
+      club: event?.target?.value || clubs?.[0],
+    };
+    updateFilters(updatedFilters);
     setSelectedClub(event?.target?.value || clubs?.[0]);
   };
 
   return (
     <Grid container spacing={[2]} className="selct_grid selct_minbx">
       <Grid item xs={12} md={8} xl={3}>
-        <span>Date</span>
+        <span className="date_title">Date</span>
         <Box className="date_min_prnt">
           <DateRangePicker
             initialSettings={{ startDate: fromDate, endDate: toDate }}

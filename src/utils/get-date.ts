@@ -1,8 +1,10 @@
 import moment from "moment";
 
+export const dateFormat = "YYYY-MM-DD";
+
 export const getDateFromISOString = (date: Date): string => {
   if (!date) return "";
-  return moment(date).format("YYYY-MM-DD");
+  return moment(date).format(dateFormat);
 };
 
 export const getDateOfBeforeOneMonth = (): Date => {
@@ -11,4 +13,14 @@ export const getDateOfBeforeOneMonth = (): Date => {
 
 export const currentDate = (): Date => {
   return moment(new Date()).toDate();
+};
+
+export const getDateOfBeforeOneMonthInFormat = (format?: string): string => {
+  return moment(new Date())
+    .subtract(1, "months")
+    .format(format ?? dateFormat);
+};
+
+export const currentDateInFormat = (format?: string): string => {
+  return moment(new Date()).format(format ?? dateFormat);
 };

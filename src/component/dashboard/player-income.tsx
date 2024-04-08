@@ -1,10 +1,20 @@
 import { AgentResults, PlayerIncomeResponse } from "@/types/player-income";
 import { mockPlayerIncome } from "@/mock/player-income";
-import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
+import {
+  EndpointUrl,
+  endpointUrls,
+  getLocalStorage,
+  getRecords,
+  LocalStorageKeys,
+} from "@/helper";
 import { Box, Grid, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { TitleCase } from "@/utils/titlecase";
+import {
+  currentDateInFormat,
+  getDateOfBeforeOneMonthInFormat,
+} from "@/utils/get-date";
 
 export default function PlayerIncome() {
   const [playerIncomeData, setPlayerIncomeData] = useState<
@@ -20,13 +30,16 @@ export default function PlayerIncome() {
   }, []);
 
   const generateUrlEndPoint = () => {
+    const getLocalStorageFilters = JSON.parse(
+      getLocalStorage(LocalStorageKeys.filterProperties)
+    );
+    const fromDate = getDateOfBeforeOneMonthInFormat(); // getLocalStorageFilters.startDate;
+    const toDate = currentDateInFormat(); // getLocalStorageFilters.endDate;
+    const club = "KOBERGS"; // getLocalStorageFilters.club;
     return endpointUrls[EndpointUrl.AGENT_RESULTS]
-      ?.replace(
-        ":fromDate",
-        moment(new Date()).subtract(1, "months").format("YYYY-MM-DD")
-      )
-      ?.replace(":toDate", moment(new Date()).format("YYYY-MM-DD"))
-      ?.replace(":club", "KOBERGS");
+      ?.replace(":fromDate", fromDate)
+      ?.replace(":toDate", toDate)
+      ?.replace(":club", club);
   };
 
   const getPlayerIncome = () => {

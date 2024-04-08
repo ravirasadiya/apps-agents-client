@@ -18,7 +18,8 @@ export enum EndpointUrl {
 export const endpointUrls: Record<EndpointUrl, string> = {
   [EndpointUrl.CREATE_USER]: `${domainWithVersion}/auth/users/`,
   [EndpointUrl.LOGIN]: `${domainWithVersion}/auth/jwt/create/`,
-  [EndpointUrl.AGENT_RESULTS]: `${domainWithOutVersion}/views/agents-summary/agent-results/?from_date=:fromDate&to_date=:toDate&club=:club&nickname=:username`,
+  // :nickname=<username> we have remove this for now.
+  [EndpointUrl.AGENT_RESULTS]: `${domainWithOutVersion}/views/agents-summary/agent-results/?from_date=:fromDate&to_date=:toDate&club=:club`,
   [EndpointUrl.CLUB_LIST]: `${domainWithOutVersion}/views/agents-summary/clubs-list/`,
   [EndpointUrl.ME]: `${domainWithOutVersion}/user/me`,
 };

@@ -1,4 +1,4 @@
-import { PlayerIncomeResponse } from "@/interfaces/player-income";
+import { PlayerIncomeResponse } from "@/types/player-income";
 
 export const mockPlayerIncome: PlayerIncomeResponse[] = [
   {

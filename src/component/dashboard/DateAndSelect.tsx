@@ -1,5 +1,11 @@
-import { ClubResponse, ClubResult } from "@/interfaces/club-list";
-import { EndpointUrl, endpointUrls, getRecords } from "@/pages/helper";
+import { ClubResponse, ClubResult } from "@/types/club-list";
+import {
+  EndpointUrl,
+  endpointUrls,
+  getRecords,
+  LocalStorageKeys,
+  setLocalStorage,
+} from "@/pages/helper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   Box,
@@ -14,6 +20,11 @@ import "bootstrap/dist/css/bootstrap.css";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import DateRangePicker from "react-bootstrap-daterangepicker";
+import {
+  currentDate,
+  getDateFromISOString,
+  getDateOfBeforeOneMonth,
+} from "@/utils/get-date";
 
 // import FormControl from "@mui/material/FormControl";
 // import InputLabel from "@mui/material/InputLabel";
@@ -23,18 +34,22 @@ import DateRangePicker from "react-bootstrap-daterangepicker";
 
 export default function DateAndSelect() {
   //datepicker
-  const [fromDate, setFromDate] = useState(
-    moment(new Date()).subtract(1, "month").toDate()
-  );
-  const [toDate, setToDate] = useState(moment(new Date()).toDate());
+  const [fromDate, setFromDate] = useState(getDateOfBeforeOneMonth());
+  const [toDate, setToDate] = useState(currentDate());
   const componentMounted = useRef(false);
 
   const [clubs, setClubs] = useState<ClubResult[]>([]);
   const [selectedClub, setSelectedClub] = useState("");
 
   const handleEvent = (event: any, picker: any) => {
-    setFromDate(picker.startDate._d.toISOString());
-    setToDate(picker.endDate._d.toISOString());
+    setFromDate(picker.startDate._d);
+    setToDate(picker.endDate._d);
+    const filters = {
+      startDate: getDateFromISOString(new Date(picker.startDate._d)),
+      endDate: getDateFromISOString(new Date(picker.endDate._d)),
+    };
+
+    setLocalStorage(LocalStorageKeys.filterProperties, filters);
   };
 
   useEffect(() => {
@@ -206,7 +221,9 @@ export default function DateAndSelect() {
             className="selct"
           >
             {clubs.map((item, index) => (
-              <MenuItem value={item.club}>{item.club}</MenuItem>
+              <MenuItem key={item.club} value={item.club}>
+                {item.club}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>

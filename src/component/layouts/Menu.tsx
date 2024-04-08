@@ -27,7 +27,11 @@ export default function Menu() {
             <KeyboardArrowDownIcon />
           </Box>
           {item.submenus.map((submenu) => (
-            <ul className="draw_ul" onClick={() => handleActive(submenu.key)}>
+            <ul
+              key={submenu.key}
+              className="draw_ul"
+              onClick={() => handleActive(submenu.key)}
+            >
               <li className={submenu.className}>
                 <Link href={submenu.url.toString()}>{submenu.title}</Link>
               </li>

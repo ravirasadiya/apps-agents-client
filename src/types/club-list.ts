@@ -8,3 +8,4 @@ export interface ClubResponse {
 export interface ClubResult {
   club: string;
 }
+

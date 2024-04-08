@@ -3,3 +3,7 @@ export interface PlayerIncomeResponse {
   price: string;
   currency: string;
 }
+
+export interface AgentResults {
+  [key: string]: string;
+}

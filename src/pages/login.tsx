@@ -7,11 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { LocalStorageKeys, setLocalStorage } from "./helper";
+import { getRecords, LocalStorageKeys, setLocalStorage } from "./helper";
 import { saveRecord } from "./helper/_api_wrapper";
 import { EndpointUrl, endpointUrls } from "./helper/endpoint";
 import { useToken } from "./hooks/get-user-login-status";
-import { LoginResponse } from "../interfaces/login";
+import { LoginResponse } from "../types/login";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { Button } from "@mui/material";
@@ -54,13 +54,24 @@ export default function Login() {
       console.log("Form data is valid:", validatedData);
       setLoading(true);
       saveRecord(endpointUrls[EndpointUrl.LOGIN], validatedData)
-        .then((response: LoginResponse) => {
+        .then(async (response: LoginResponse) => {
           // [TODO] mock response override to the api response.
           // const { refresh } = mockLoginResponse;
           const { refresh, access } = response ?? { refresh: "", access: "" };
           if (refresh) {
             setLocalStorage(LocalStorageKeys.ACCESS_TOKEN, access);
             setLocalStorage(LocalStorageKeys.REFRESH_TOKEN, refresh);
+            await getRecords(endpointUrls[EndpointUrl.ME])
+              .then((profile) => {
+                setLocalStorage(LocalStorageKeys.PROFILE, profile);
+              })
+              .catch((error) => {
+                // console.log("error", error);
+                snackBarRef.current?.displaySnackbar(
+                  "Error: There was some error while fetching the profile records",
+                  "error"
+                );
+              });
             snackBarRef.current?.displaySnackbar(
               "Login successfully",
               "success"

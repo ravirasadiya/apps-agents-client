@@ -1,8 +1,10 @@
-import { PlayerIncomeResponse } from "@/interfaces/player-income";
+import { AgentResults, PlayerIncomeResponse } from "@/types/player-income";
 import { mockPlayerIncome } from "@/mock/player-income";
 import { EndpointUrl, endpointUrls, getRecords } from "@/pages/helper";
 import { Box, Grid, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import moment from "moment";
+import { TitleCase } from "@/utils/titlecase";
 
 export default function PlayerIncome() {
   const [playerIncomeData, setPlayerIncomeData] = useState<
@@ -17,9 +19,28 @@ export default function PlayerIncome() {
     }
   }, []);
 
+  const generateUrlEndPoint = () => {
+    return endpointUrls[EndpointUrl.AGENT_RESULTS]
+      ?.replace(
+        ":fromDate",
+        moment(new Date()).subtract(1, "months").format("YYYY-MM-DD")
+      )
+      ?.replace(":toDate", moment(new Date()).format("YYYY-MM-DD"))
+      ?.replace(":club", "KOBERGS");
+  };
+
   const getPlayerIncome = () => {
-    getRecords(endpointUrls[EndpointUrl.AGENT_RESULTS])
-      .then((response) => setPlayerIncomeData(response))
+    getRecords(generateUrlEndPoint())
+      .then((response: AgentResults) => {
+        const data: PlayerIncomeResponse[] = Object.keys(response).map(
+          (key: any) => {
+            const title = key.substring(1).replace(/_/g, " ");
+            const price = response[key];
+            return { currency: "$", title, price };
+          }
+        );
+        setPlayerIncomeData(data);
+      })
       .catch((e) => {
         // [TODO] set the mock data for the response of the agency results data
         setPlayerIncomeData(mockPlayerIncome);
@@ -34,7 +55,7 @@ export default function PlayerIncome() {
         {playerIncomeData.map((income: PlayerIncomeResponse, index: number) => (
           <Grid key={index} item xs={6} md={3} xl={2}>
             <Box className="agent_income">
-              <Typography>{income.title}</Typography>
+              <Typography>{TitleCase(income.title)}</Typography>
               <Typography component="h3" className="">
                 {income.currency} {income.price}
               </Typography>

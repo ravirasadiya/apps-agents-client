@@ -1,6 +1,6 @@
 import { AgentResults, PlayerIncomeResponse } from "@/types/player-income";
 import { mockPlayerIncome } from "@/mock/player-income";
-import { EndpointUrl, endpointUrls, getRecords } from "@/pages/helper";
+import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
 import { Box, Grid, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import moment from "moment";

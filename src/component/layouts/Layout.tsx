@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import {
   clearLocalStorage,
   LocalStorageKeys,
-} from "@/pages/helper/local-storage-wrapper";
+} from "@/helper/local-storage-wrapper";
 const drawerWidth = 250;
 
 type LayoutProps = {

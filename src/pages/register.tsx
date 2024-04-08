@@ -9,9 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { EndpointUrl, endpointUrls, saveRecord } from "./helper";
-import { defaultErrorMessageForSystem } from "./helper/_api_wrapper";
-import { useToken } from "./hooks/get-user-login-status";
+import { EndpointUrl, endpointUrls, saveRecord } from "../helper";
+import { defaultErrorMessageForSystem } from "../helper/_api_wrapper";
+import { useToken } from "../hooks/get-user-login-status";
 
 export default function Register() {
   const [isLoading, setLoading] = useState<boolean>(false);

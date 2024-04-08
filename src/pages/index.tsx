@@ -8,7 +8,7 @@ import ClubResultsTabal from "@/component/dashboard/ClubResultsTabal";
 import PlayerResultsTabal from "@/component/dashboard/PlayerResultsTabal";
 import NicknameResultsTabal from "@/component/dashboard/NicknameResultsTabal";
 import { useRouter } from "next/router";
-import { useToken } from "./hooks/get-user-login-status";
+import { useToken } from "../hooks/get-user-login-status";
 import PlayerIncome from "@/component/dashboard/player-income";
 
 export default function Dashboard() {

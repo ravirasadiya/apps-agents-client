@@ -5,7 +5,7 @@ import {
   getRecords,
   LocalStorageKeys,
   setLocalStorage,
-} from "@/pages/helper";
+} from "@/helper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   Box,

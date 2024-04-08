@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { menuItems } from "@/pages/helper/sidebar-menu";
+import menuItems from "@/pages/helper/sidebar-menu";
 
 export default function Menu() {
   const router = useRouter();

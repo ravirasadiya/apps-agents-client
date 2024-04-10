@@ -10,9 +10,14 @@ import NicknameResultsTabal from "@/component/dashboard/NicknameResultsTabal";
 import { useRouter } from "next/router";
 import { useToken } from "../hooks/get-user-login-status";
 import PlayerIncome from "@/component/dashboard/player-income";
+import {
+  currentDateInFormat,
+  getDateOfBeforeOneMonthInFormat,
+} from "@/utils/get-date";
 
 export default function Dashboard() {
   const [token, setToken] = useToken();
+  const [filters, setFilters] = useState(null);
 
   const _router = useRouter();
 
@@ -21,6 +26,11 @@ export default function Dashboard() {
       _router.push("/login");
     }
   }, [token]);
+
+  const handleFilterChange = (filters: any) => {
+    console.log("filters", filters);
+    setFilters(filters);
+  };
 
   return (
     <Layout>
@@ -33,7 +43,7 @@ export default function Dashboard() {
       <div>
         <Box>
           <Typography className="def_had_txt">Summary</Typography>
-          <DateAndSelect />
+          <DateAndSelect onFilterChange={handleFilterChange} />
           <Box className="graph_bx">
             <Typography className="graph_bx_p">
               Player | Agent earnings
@@ -91,55 +101,7 @@ export default function Dashboard() {
           </Box>
 
           {/** Players Income */}
-
-          <PlayerIncome />
-
-          {/* <Box className="play_min_bx_set">
-            <Typography className="agent_p">Players income</Typography>
-            <Grid container spacing={[3, 3, 3]} className="selct_grid">
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Profit/Loss in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 60,319,23
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rake in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 9,705.77
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rackeback in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 9,705.77
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rebate in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ -1.000,00
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Agent Settlement In Sum</Typography>
-                  <Typography component="h3" className="">
-                    $ 56,829.90
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box> */}
-
+          <PlayerIncome filters={filters} />
           {/** Players Income End */}
 
           <Box className="">
@@ -189,7 +151,7 @@ export default function Dashboard() {
           </Box>
           <PlayerResultsTabal />
           <ClubResultsTabal />
-          <NicknameResultsTabal />
+          {/* <NicknameResultsTabal /> */}
         </Box>
       </div>
     </Layout>

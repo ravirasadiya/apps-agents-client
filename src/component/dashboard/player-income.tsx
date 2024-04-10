@@ -16,26 +16,27 @@ import {
   getDateOfBeforeOneMonthInFormat,
 } from "@/utils/get-date";
 
-export default function PlayerIncome() {
+export default function PlayerIncome(props: any) {
   const [playerIncomeData, setPlayerIncomeData] = useState<
     PlayerIncomeResponse[]
   >([]);
   const componentMounted = useRef<boolean>(false);
 
   useEffect(() => {
+    console.log('props changed', props);
     if (!componentMounted.current) {
       getPlayerIncome();
       componentMounted.current = true;
     }
-  }, []);
+  }, [props]);
 
   const generateUrlEndPoint = () => {
     const getLocalStorageFilters = JSON.parse(
       getLocalStorage(LocalStorageKeys.filterProperties)
     );
-    const fromDate = getDateOfBeforeOneMonthInFormat(); // getLocalStorageFilters.startDate;
-    const toDate = currentDateInFormat(); // getLocalStorageFilters.endDate;
-    const club = "KOBERGS"; // getLocalStorageFilters.club;
+    const fromDate = props?.startDate ?? getDateOfBeforeOneMonthInFormat(); // getLocalStorageFilters.startDate;
+    const toDate = props?.endDate ?? currentDateInFormat(); // getLocalStorageFilters.endDate;
+    const club = props?.club ?? "KOBERGS"; // getLocalStorageFilters.club;
     return endpointUrls[EndpointUrl.AGENT_RESULTS]
       ?.replace(":fromDate", fromDate)
       ?.replace(":toDate", toDate)

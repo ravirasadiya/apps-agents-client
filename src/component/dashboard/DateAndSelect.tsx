@@ -40,7 +40,7 @@ export interface Filters {
   club: string;
 }
 
-export default function DateAndSelect() {
+export default function DateAndSelect(props: any) {
   //datepicker
   const [fromDate, setFromDate] = useState(getDateOfBeforeOneMonth());
   const [toDate, setToDate] = useState(currentDate());
@@ -66,7 +66,9 @@ export default function DateAndSelect() {
   };
 
   const updateFilters = (filters: Filters) => {
+    console.log('props data:::', props);
     setFilters(filters);
+    props.onFilterChange(filters);
     setLocalStorage(LocalStorageKeys.filterProperties, filters);
   };
 

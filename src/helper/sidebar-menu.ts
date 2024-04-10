@@ -50,7 +50,7 @@ const menuItems = [
     ],
   },
   {
-    title: "Players",
+    title: "Player",
     index: 0,
     display: true,
     key: "players",

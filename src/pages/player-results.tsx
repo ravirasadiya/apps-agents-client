@@ -89,7 +89,7 @@ export default function PlayerResults() {
             </Grid>
           </Grid>
 
-          <PlayerResultsAgents />
+          {/* <PlayerResultsAgents /> */}
         </Box>
       </div>
     </Layout>

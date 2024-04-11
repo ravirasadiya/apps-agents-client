@@ -1,41 +1,32 @@
-import React, { Component, useState } from 'react';
-import Head from "next/head";
+import SettlementsTable from "@/component/Settlements/SettlementsTable";
+import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 import Layout from "@/component/layouts/Layout";
-import { Box, Button, Grid, Modal } from "@mui/material";
-import Typography from '@mui/material/Typography';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import "bootstrap/dist/css/bootstrap.css";
+import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { Box, Button } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import DateRangePicker from 'react-bootstrap-daterangepicker';
-import FormControl from '@mui/material/FormControl';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import MenuItem from '@mui/material/MenuItem';
-import Dialog from '@mui/material/Dialog';
-import SettlementsTabal from '@/component/Settlements/SettlementsTabal';
-import DateAndSelect from '@/component/dashboard/DateAndSelect';
-import moment from 'moment';
-
-
+import "bootstrap/dist/css/bootstrap.css";
+import moment from "moment";
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import DateRangePicker from "react-bootstrap-daterangepicker";
 
 export default function Settlements() {
-  const [age, setAge] = React.useState('');
+  const [filters, setFilters] = useState();
+  const [fromDate, setFromData] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
-  };
-
-  //datepicker
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
-  
-
-  const handleEvent = (event: any, picker: any) => {
-    setFromDate(picker.startDate._d.toISOString());
-    setToDate(picker.endDate._d.toISOString());
+    // no data
   };
 
   //pop//
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -44,6 +35,14 @@ export default function Settlements() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const onFilterChanged = (filter: Filters) => {
+    console.log("on filter update", filter);
+    setFilters(filters);
+  };
+
+  const handleEvent = () => {};
+
   return (
     <>
       <Layout>
@@ -59,51 +58,53 @@ export default function Settlements() {
               <Typography className="def_had_txt">Settlements</Typography>
               <Button onClick={handleClickOpen}>Add Aettlement</Button>
             </Box>
-            <DateAndSelect />
-            <SettlementsTabal />
+            <DateAndSelect onFilterChange={onFilterChanged} />
+            <SettlementsTable filters={filters} />
           </Box>
         </div>
       </Layout>
-
 
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        className='def_modal dilog settlements_modl'
+        className="def_modal dilog settlements_modl"
       >
         <Box>
           <Box className="sign">
             <Box className="sign_min">
-              <Typography component={"h2"} className='def_h2_hd mrg_colr'>Add Settlements</Typography>
+              <Typography component={"h2"} className="def_h2_hd mrg_colr">
+                Add Settlements
+              </Typography>
 
               <Box className="flx_log_input">
                 <Box component="form">
                   <Box className="date_min_prnt">
                     <DateRangePicker
-                      initialSettings={{ startDate: '1/1/2014', endDate: '3/1/2014' }}
+                      initialSettings={{
+                        startDate: "1/1/2014",
+                        endDate: "3/1/2014",
+                      }}
                       onEvent={handleEvent}
                     >
-                      <button className='def_date_pickr'>
-                        {moment(fromDate).format('LL')}
+                      <button className="def_date_pickr">
+                        {moment(fromDate).format("LL")}
                         &nbsp; - &nbsp;
-                        {moment(toDate).format('LL')}
+                        {moment(toDate).format("LL")}
                         <KeyboardArrowDownIcon />
                       </button>
                     </DateRangePicker>
-                    <Box className='selct_minbx mrg_sp'>
-                      <FormControl className='def_selct'>
+                    <Box className="selct_minbx mrg_sp">
+                      <FormControl className="def_selct">
                         <Select
-                          value={age}
+                          value={""}
                           onChange={handleChange}
                           displayEmpty
-                          inputProps={{ 'aria-label': 'Without label' }}
-                          className='selct'
+                          inputProps={{ "aria-label": "Without label" }}
+                          className="selct"
                         >
-                          <MenuItem value="">
-                            None
-                          </MenuItem>
+                          <MenuItem value="">None</MenuItem>
                           <MenuItem value={10}>Ten</MenuItem>
                           <MenuItem value={20}>Twenty</MenuItem>
                           <MenuItem value={30}>Thirty</MenuItem>
@@ -123,19 +124,19 @@ export default function Settlements() {
                     />
                   </Box>
 
-                  <textarea id="story" name="story" placeholder='Description' className='textarea_def'>
-                  </textarea>
+                  <textarea
+                    id="story"
+                    name="story"
+                    placeholder="Description"
+                    className="textarea_def"
+                  ></textarea>
                 </Box>
-                <Button className='def_btn'>Add settlement</Button>
+                <Button className="def_btn">Add settlement</Button>
               </Box>
-
             </Box>
           </Box>
         </Box>
       </Dialog>
-
-
-
     </>
   );
 }

@@ -1,25 +1,12 @@
-import { ClubResponse, ClubResult } from "@/types/club-list";
 import {
   EndpointUrl,
   endpointUrls,
+  getLocalStorage,
   getRecords,
   LocalStorageKeys,
   setLocalStorage,
 } from "@/helper";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {
-  Box,
-  FormControl,
-  Grid,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
-import "bootstrap-daterangepicker/daterangepicker.css";
-import "bootstrap/dist/css/bootstrap.css";
-import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
-import DateRangePicker from "react-bootstrap-daterangepicker";
+import { ClubResponse, ClubResult } from "@/types/club-list";
 import {
   currentDate,
   currentDateInFormat,
@@ -27,12 +14,19 @@ import {
   getDateOfBeforeOneMonth,
   getDateOfBeforeOneMonthInFormat,
 } from "@/utils/get-date";
-
-// import FormControl from "@mui/material/FormControl";
-// import InputLabel from "@mui/material/InputLabel";
-// import MenuItem from "@mui/material/MenuItem";
-// import FormHelperText from "@mui/material/FormHelperText";
-// import Select, { SelectChangeEvent } from "@mui/material/Select";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import {
+  Box,
+  FormControl,
+  Grid,
+  MenuItem,
+  Select
+} from "@mui/material";
+import "bootstrap-daterangepicker/daterangepicker.css";
+import "bootstrap/dist/css/bootstrap.css";
+import moment from "moment";
+import { useEffect, useRef, useState } from "react";
+import DateRangePicker from "react-bootstrap-daterangepicker";
 
 export interface Filters {
   startDate: string;
@@ -40,7 +34,11 @@ export interface Filters {
   club: string;
 }
 
-export default function DateAndSelect(props: any) {
+interface DateAndSelectProps {
+  onFilterChange: (filters: Filters) => void;
+}
+
+export default function DateAndSelect(props: Readonly<DateAndSelectProps>) {
   //datepicker
   const [fromDate, setFromDate] = useState(getDateOfBeforeOneMonth());
   const [toDate, setToDate] = useState(currentDate());
@@ -66,19 +64,21 @@ export default function DateAndSelect(props: any) {
   };
 
   const updateFilters = (filters: Filters) => {
-    console.log('props data:::', props);
     setFilters(filters);
     props.onFilterChange(filters);
     setLocalStorage(LocalStorageKeys.filterProperties, filters);
   };
 
   useEffect(() => {
+    const getLocalStorageFilters = JSON.parse(
+      getLocalStorage(LocalStorageKeys.filterProperties)
+    );
     if (!componentMounted.current) {
       getRecords(endpointUrls[EndpointUrl.CLUB_LIST])
         .then((response: ClubResponse) => {
           const { results } = response ?? { count: 0, results: [] };
           setClubs(results);
-          setSelectedClub(results?.[0]?.club);
+          setSelectedClub(getLocalStorageFilters.club || results?.[0]?.club);
         })
         .catch((e: any) => {
           console.log("ERROR...", e);

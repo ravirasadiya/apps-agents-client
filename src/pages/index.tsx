@@ -3,7 +3,7 @@ import Head from "next/head";
 import Layout from "@/component/layouts/Layout";
 import { Box, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import DateAndSelect from "@/component/dashboard/DateAndSelect";
+import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 import ClubResultsTabal from "@/component/dashboard/ClubResultsTabal";
 import PlayerResultsTabal from "@/component/dashboard/PlayerResultsTabal";
 import NicknameResultsTabal from "@/component/dashboard/NicknameResultsTabal";
@@ -14,12 +14,104 @@ import {
   currentDateInFormat,
   getDateOfBeforeOneMonthInFormat,
 } from "@/utils/get-date";
+import {
+  EndpointUrl,
+  endpointUrls,
+  getLocalStorage,
+  getRecords,
+  LocalStorageKeys,
+} from "@/helper";
+import { AgentResults } from "@/types/player-income";
+import { generateUrl } from "@/helper/_api_wrapper";
+
+export interface AgentAggregateRecord {
+  title: string;
+  price: string;
+  currency: string;
+}
+
+export interface AgentIncomeResult {
+  title: string;
+  data: AgentAggregateRecord[];
+}
 
 export default function Dashboard() {
   const [token, setToken] = useToken();
-  const [filters, setFilters] = useState(null);
+  const [filters, setFilters] = useState<Filters>();
+  const [dashboardAggregateResult, setDashboardAggregateResult] = useState<
+    AgentIncomeResult[]
+  >([]);
 
   const _router = useRouter();
+
+  const resultArray: AgentIncomeResult[] = [];
+
+  const agentIncomeArray: AgentAggregateRecord[] = [];
+  const playerResultsArray: AgentAggregateRecord[] = [];
+  const agentEarningsArray: AgentAggregateRecord[] = [];
+
+  useEffect(() => {
+    console.log("dashboard aggregate result", dashboardAggregateResult);
+    if (dashboardAggregateResult.length) {
+      setDashboardAggregateResult([]);
+    }
+    getPlayerIncome();
+  }, [filters]);
+
+  const getPlayerIncome = () => {
+    getRecords(generateUrl(endpointUrls[EndpointUrl.AGENT_RESULTS]))
+      .then((response: AgentResults) => {
+        for (const [key, value] of Object.entries(response)) {
+          if (key.startsWith("_agent_")) {
+            if (
+              key === "_agent_earnings_rb" ||
+              key === "_agent_earnings_rebate" ||
+              key === "_agent_earnings"
+            ) {
+              agentEarningsArray.push({
+                title: key,
+                price: value,
+                currency: "$",
+              });
+            } else {
+              agentIncomeArray.push({
+                title: key,
+                price: value,
+                currency: "$",
+              });
+            }
+          } else if (key.startsWith("_player")) {
+            playerResultsArray.push({
+              title: key,
+              price: value,
+              currency: "$",
+            });
+          }
+        }
+
+        if (agentIncomeArray.length > 0) {
+          resultArray.push({ title: "Agent Income", data: agentIncomeArray });
+        }
+        if (playerResultsArray.length > 0) {
+          resultArray.push({
+            title: "Player Results",
+            data: playerResultsArray,
+          });
+        }
+        if (agentEarningsArray.length > 0) {
+          resultArray.push({
+            title: "Agent Earnings",
+            data: agentEarningsArray,
+          });
+        }
+        setDashboardAggregateResult(resultArray);
+      })
+      .catch((e) => {
+        // [TODO] set the mock data for the response of the agency results data
+        // setPlayerIncomeData(mockPlayerIncome);
+        console.log("error while fetching agent results records:", e);
+      });
+  };
 
   useEffect(() => {
     if (!token) {
@@ -28,7 +120,6 @@ export default function Dashboard() {
   }, [token]);
 
   const handleFilterChange = (filters: any) => {
-    console.log("filters", filters);
     setFilters(filters);
   };
 
@@ -50,105 +141,11 @@ export default function Dashboard() {
             </Typography>
             <img src="img/graph_img_01.png" alt="" />
           </Box>
-          {/* <Box className="graph_bx graph_bx_v2">
-              <Typography className="graph_bx_p">App Report</Typography>
-              <img src="img/graph_img_02.png" alt="" />
-            </Box> */}
-          <Box sx={{ mt: "25px" }}>
-            <Typography className="agent_p">Agent income</Typography>
-            <Grid container spacing={[3, 3, 3]} className="selct_grid">
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Profit/Loss in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 60,319,23
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rake in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 9,705.77
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rackeback in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 9,705.77
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rebate in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ -1.000,00
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Agent Settlement In Sum</Typography>
-                  <Typography component="h3" className="">
-                    $ 56,829.90
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-
           {/** Players Income */}
-          <PlayerIncome filters={filters} />
+          {dashboardAggregateResult.map((item: AgentIncomeResult, index) => (
+            <PlayerIncome key={item.title} data={item} />
+          ))}
           {/** Players Income End */}
-
-          <Box className="">
-            <Typography className="agent_p">Agent earnings</Typography>
-            <Grid container spacing={[3, 3, 3]} className="selct_grid">
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Profit/Loss in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 60,319,23
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rake in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 9,705.77
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rackeback in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ 9,705.77
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Rebate in USD</Typography>
-                  <Typography component="h3" className="">
-                    $ -1.000,00
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} md={3} xl={2}>
-                <Box className="agent_income">
-                  <Typography>Agent Settlement In Sum</Typography>
-                  <Typography component="h3" className="">
-                    $ 56,829.90
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
           <PlayerResultsTabal />
           <ClubResultsTabal />
           {/* <NicknameResultsTabal /> */}

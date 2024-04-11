@@ -19,7 +19,7 @@ const rows = [
     { id: '2100559', nickname: 'tellmewhyy', club: '2100559', rakeback: '$ 0.00', rebate: '$ 0.00',  },
 ];
 
-export default function SettlementsTabal() {
+export default function SettlementsTable() {
    
     
     return (

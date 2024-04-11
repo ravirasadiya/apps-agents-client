@@ -1,3 +1,8 @@
+import { Filters } from "@/component/dashboard/DateAndSelect";
+import {
+  currentDateInFormat,
+  getDateOfBeforeOneMonthInFormat,
+} from "@/utils/get-date";
 import axios from "axios";
 import { getLocalStorage, LocalStorageKeys } from "./local-storage-wrapper";
 
@@ -64,6 +69,29 @@ export const updateRecord = async (apiUrl: string, options?: any) => {
     .catch(function (error) {
       console.error(error);
     });
+};
+
+export const generateUrl = (url: string, filters?: Filters) => {
+  const generateUrlEndPoint = () => {
+    const getLocalStorageFilters = JSON.parse(
+      getLocalStorage(LocalStorageKeys.filterProperties)
+    );
+    const fromDate =
+      filters?.startDate ??
+      getLocalStorageFilters.startDate ??
+      getDateOfBeforeOneMonthInFormat();
+    const toDate =
+      filters?.endDate ??
+      getLocalStorageFilters.endDate ??
+      currentDateInFormat();
+    const club = filters?.club ?? getLocalStorageFilters.club ?? "KOBERGS";
+    console.log("from date", fromDate, toDate, club);
+    return url
+      ?.replace(":fromDate", fromDate)
+      ?.replace(":toDate", toDate)
+      ?.replace(":club", club);
+  };
+  return generateUrlEndPoint();
 };
 
 export default {

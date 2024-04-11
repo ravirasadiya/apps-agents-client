@@ -14,6 +14,7 @@ export enum EndpointUrl {
   ME = 4,
   AGENT_PLAYER_RESULTS = 5, // In the dashboard table, "Player Results" section.
   AGENT_CLUB_RESULTS = 6, // In the dashboard table, "Club Results" section.
+  AGENT_SETTLEMENTS = 7,
 }
 
 // Define the corresponding URLs separately
@@ -26,6 +27,7 @@ export const endpointUrls: Record<EndpointUrl, string> = {
   [EndpointUrl.ME]: `${domainWithOutVersion}/user/me`,
   [EndpointUrl.AGENT_PLAYER_RESULTS]: `${domainWithOutVersion}/views/agents-summary/player-results/?from_date=:fromDate&to_date=:toDate`,
   [EndpointUrl.AGENT_CLUB_RESULTS]: `${domainWithOutVersion}/views/agents-summary/clubs-results/?from_date=:fromDate&to_date=:toDate`,
+  [EndpointUrl.AGENT_SETTLEMENTS]: `${domainWithOutVersion}/views/agents-settlements/settlements/?from_date=:fromDate&to_date=:toDate`,
 };
 
 export default { EndpointUrl, endpointUrls };

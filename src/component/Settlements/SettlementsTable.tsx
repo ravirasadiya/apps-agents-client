@@ -95,7 +95,6 @@ export default function SettlementsTable(props: any) {
         <div style={{ height: 368, width: "100%" }} className="data_tabal_def">
           <DataGrid
             rows={rows}
-            onRowClick={openConfirmationDialog}
             columns={columns}
             initialState={{
               pagination: {

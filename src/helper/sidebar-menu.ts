@@ -9,7 +9,7 @@ const menuItems = [
         index: 0,
         title: "Summary",
         key: "summary",
-        url: "/dashboard",
+        url: "/",
         className: "active",
       },
       {
@@ -59,7 +59,7 @@ const menuItems = [
         index: 0,
         title: "Summary",
         key: "summary",
-        url: "/dashboard",
+        url: "/",
         className: "",
       },
       {

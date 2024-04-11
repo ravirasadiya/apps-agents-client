@@ -5,47 +5,50 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Typography } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-const columns: GridColDef[] = [
-  { field: "date", headerName: "Date", width: 300 },
-  { field: "player", headerName: "Player", width: 300 },
-  { field: "transactionUSD", headerName: "Amount $", width: 300 },
-  { field: "description", headerName: "Description", width: 300 },
-  {
-    field: "action",
-    renderCell: (params) => {
-      return (
-        <div className="userBox">
-          <Button className="edt_btn_ic">
-            <CreateIcon />
-          </Button>
-          <Button id={"delete"} className="edt_btn_ic delet_btn_ic">
-            <DeleteIcon />
-          </Button>
-        </div>
-      );
-    },
-    headerName: "Action",
-    width: 300,
-  },
-];
+import { useEffect, useRef, useState } from "react";
+import SnackbarUI, { SnackbarRef } from "../ui/snackbar/snackbar";
 
 export default function SettlementsTable(props: any) {
+  const columns: GridColDef[] = [
+    { field: "date", headerName: "Date", width: 300 },
+    { field: "player", headerName: "Player", width: 300 },
+    { field: "transactionUSD", headerName: "Amount $", width: 300 },
+    { field: "description", headerName: "Description", width: 300 },
+    {
+      field: "action",
+      renderCell: (params) => {
+        return (
+          <div className="userBox">
+            {/* <Button className="edt_btn_ic">
+              <CreateIcon />
+            </Button> */}
+            <Button
+              onClick={(e) => openConfirmationDialog(params, event)}
+              className="edt_btn_ic delet_btn_ic"
+            >
+              <DeleteIcon />
+            </Button>
+          </div>
+        );
+      },
+      headerName: "Action",
+      width: 300,
+    },
+  ];
   //pop//
   const [open, setOpen] = useState(false);
   const [rows, setRows] = useState([]);
   const [selectedRow, setSelectedRow] = useState<string>("");
+  const snackBarRef = useRef<SnackbarRef>(null);
 
   useEffect(() => {
     getSettlementsRecord();
   }, [props.onSettlementSaved]);
 
   const openConfirmationDialog = (params: any, event: any) => {
-    const getActionByElementId = document.getElementById("delete");
-    if (getActionByElementId?.id === "delete") {
-      setSelectedRow(params.id);
-      setOpen(true);
-    }
+    console.log("params", params);
+    setSelectedRow(params.id);
+    setOpen(true);
   };
 
   const deleteSettlements = () => {
@@ -56,6 +59,10 @@ export default function SettlementsTable(props: any) {
       )
     )
       .then((res) => {
+        snackBarRef.current?.displaySnackbar(
+          "Settlement is deleted successfully",
+          "success"
+        );
         setOpen(false);
         getSettlementsRecord();
       })
@@ -126,6 +133,10 @@ export default function SettlementsTable(props: any) {
           </Box>
         </Box>
       </Dialog>
+
+      <div>
+        <SnackbarUI ref={snackBarRef} />
+      </div>
     </>
   );
 }

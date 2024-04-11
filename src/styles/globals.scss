@@ -1,50 +1,50 @@
 @font-face {
-  font-family: 'Poppins';
-  src: url('./fonts/Poppins-SemiBold.eot');
-  src: url('./fonts/Poppins-SemiBold.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/Poppins-SemiBold.woff2') format('woff2'),
-    url('./fonts/Poppins-SemiBold.woff') format('woff'),
-    url('./fonts/Poppins-SemiBold.ttf') format('truetype'),
-    url('./fonts/Poppins-SemiBold.svg#Poppins-SemiBold') format('svg');
+  font-family: "Poppins";
+  src: url("./fonts/Poppins-SemiBold.eot");
+  src: url("./fonts/Poppins-SemiBold.eot?#iefix") format("embedded-opentype"),
+    url("./fonts/Poppins-SemiBold.woff2") format("woff2"),
+    url("./fonts/Poppins-SemiBold.woff") format("woff"),
+    url("./fonts/Poppins-SemiBold.ttf") format("truetype"),
+    url("./fonts/Poppins-SemiBold.svg#Poppins-SemiBold") format("svg");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('./fonts/Poppins-Bold.eot');
-  src: url('./fonts/Poppins-Bold.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/Poppins-Bold.woff2') format('woff2'),
-    url('./fonts/Poppins-Bold.woff') format('woff'),
-    url('./fonts/Poppins-Bold.ttf') format('truetype'),
-    url('./fonts/Poppins-Bold.svg#Poppins-Bold') format('svg');
+  font-family: "Poppins";
+  src: url("./fonts/Poppins-Bold.eot");
+  src: url("./fonts/Poppins-Bold.eot?#iefix") format("embedded-opentype"),
+    url("./fonts/Poppins-Bold.woff2") format("woff2"),
+    url("./fonts/Poppins-Bold.woff") format("woff"),
+    url("./fonts/Poppins-Bold.ttf") format("truetype"),
+    url("./fonts/Poppins-Bold.svg#Poppins-Bold") format("svg");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('./fonts/Poppins-Medium.eot');
-  src: url('./fonts/Poppins-Medium.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/Poppins-Medium.woff2') format('woff2'),
-    url('./fonts/Poppins-Medium.woff') format('woff'),
-    url('./fonts/Poppins-Medium.ttf') format('truetype'),
-    url('./fonts/Poppins-Medium.svg#Poppins-Medium') format('svg');
+  font-family: "Poppins";
+  src: url("./fonts/Poppins-Medium.eot");
+  src: url("./fonts/Poppins-Medium.eot?#iefix") format("embedded-opentype"),
+    url("./fonts/Poppins-Medium.woff2") format("woff2"),
+    url("./fonts/Poppins-Medium.woff") format("woff"),
+    url("./fonts/Poppins-Medium.ttf") format("truetype"),
+    url("./fonts/Poppins-Medium.svg#Poppins-Medium") format("svg");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('./fonts/Poppins-Regular.eot');
-  src: url('./fonts/Poppins-Regular.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/Poppins-Regular.woff2') format('woff2'),
-    url('./fonts/Poppins-Regular.woff') format('woff'),
-    url('./fonts/Poppins-Regular.ttf') format('truetype'),
-    url('./fonts/Poppins-Regular.svg#Poppins-Regular') format('svg');
+  font-family: "Poppins";
+  src: url("./fonts/Poppins-Regular.eot");
+  src: url("./fonts/Poppins-Regular.eot?#iefix") format("embedded-opentype"),
+    url("./fonts/Poppins-Regular.woff2") format("woff2"),
+    url("./fonts/Poppins-Regular.woff") format("woff"),
+    url("./fonts/Poppins-Regular.ttf") format("truetype"),
+    url("./fonts/Poppins-Regular.svg#Poppins-Regular") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -57,9 +57,10 @@
 }
 
 $f_primary: "Poppins";
-$primary: #88F;
-$secondary: #A2A9B0;
-$primary-dark: #11141C;
+$primary: #88f;
+$secondary: #a2a9b0;
+$primary-dark: #11141c;
+$white: #fff;
 
 html,
 body {
@@ -69,7 +70,7 @@ body {
 
 body {
   font-family: $f_primary !important;
-  background: #1A1D29 !important;
+  background: #1a1d29 !important;
   color: #fff;
 }
 
@@ -105,7 +106,7 @@ h2.def_h2_hd {
 }
 
 p.def_p_titl {
-  color: #FFF;
+  color: #fff;
   font-family: $f_primary;
   font-size: 20px;
   font-style: normal;
@@ -116,7 +117,7 @@ p.def_p_titl {
 }
 
 .def_input {
-  background: #11141C;
+  background: #11141c;
   margin: 0;
   background: $primary-dark;
   min-height: 42px;
@@ -130,7 +131,7 @@ p.def_p_titl {
   }
 
   .MuiSvgIcon-fontSizeMedium {
-    color: #FFF;
+    color: #fff;
   }
 
   .MuiInputBase-inputAdornedEnd {
@@ -143,7 +144,7 @@ p.def_p_titl {
   }
 
   .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #5A5A81 !important;
+    border: 1px solid #5a5a81 !important;
     border-radius: 15px;
   }
 
@@ -164,7 +165,8 @@ p.def_p_titl {
   min-height: 40px;
   border-radius: 15px;
   background: $primary;
-  color: #FFF;
+  width: 100%;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -192,7 +194,7 @@ p.def_p_titl {
   margin-bottom: 15px;
 
   .user-input {
-    background: #161A23;
+    background: #161a23;
     color: #fff;
     height: 42px;
     width: 265px;
@@ -200,9 +202,9 @@ p.def_p_titl {
     outline: none;
     padding: 0 13px;
     border-radius: 15px;
-    border: 1px solid #5A5A81;
-    background: #11141C;
-    color: #BCBCE0;
+    border: 1px solid #5a5a81;
+    background: #11141c;
+    color: #bcbce0;
     font-family: $f_primary;
     font-size: 14px;
     font-style: normal;
@@ -216,7 +218,7 @@ p.def_p_titl {
 }
 
 p.def_p_forget {
-  color: #FFF;
+  color: #fff;
   text-align: center;
   font-size: 12px;
   font-style: normal;
@@ -242,7 +244,7 @@ p.def_p_forget {
   input {
     height: 42px;
     width: 50px;
-    border: 1px solid #5A5A81 !important;
+    border: 1px solid #5a5a81 !important;
     outline: none;
     border-radius: 16px;
     background: transparent;
@@ -251,7 +253,6 @@ p.def_p_forget {
     justify-content: center;
   }
 }
-
 
 // drawer
 // drawer
@@ -276,14 +277,14 @@ p.def_p_forget {
 
 .draw_bx {
   .MuiDrawer-paperAnchorLeft {
-    background: #11141C !important;
+    background: #11141c !important;
     box-shadow: 0px 0px 6.3px 0px rgba(136, 136, 255, 0.33) !important;
   }
 }
 
 .for_prnt_draw {
   .MuiDrawer-paperAnchorLeft {
-    background: #11141C !important;
+    background: #11141c !important;
     box-shadow: 0px 0px 6.3px 0px rgba(136, 136, 255, 0.33) !important;
   }
 }
@@ -308,7 +309,7 @@ p.def_p_forget {
   padding: 0 15px;
 
   p {
-    color: #BCBCE0;
+    color: #bcbce0;
     font-family: $f_primary;
     font-size: 16px;
     font-style: normal;
@@ -319,7 +320,7 @@ p.def_p_forget {
   svg {
     height: 24px;
     width: 24px;
-    color: #BCBCE0 !important;
+    color: #bcbce0 !important;
   }
 }
 
@@ -351,7 +352,7 @@ p.def_p_forget {
     }
 
     a {
-      color: #FFF;
+      color: #fff;
       font-family: $f_primary;
       font-size: 15px;
       font-style: normal;
@@ -361,7 +362,9 @@ p.def_p_forget {
       line-height: normal;
     }
     &.active {
-      a {color: $primary;}
+      a {
+        color: $primary;
+      }
     }
   }
 }
@@ -386,7 +389,7 @@ p.def_p_forget {
 
       .user-block {
         svg {
-          color: #D9D9D9 !important;
+          color: #d9d9d9 !important;
         }
       }
     }
@@ -428,7 +431,7 @@ p.def_p_forget {
     font-weight: 400;
     line-height: 140%;
     border-radius: 50%;
-    background: #DA1E28;
+    background: #da1e28;
     color: #fff;
   }
 }
@@ -442,12 +445,12 @@ p.def_p_forget {
 .user-block {
   height: 40px;
   width: 40px;
-  background-color: #F2F4F8;
+  background-color: #f2f4f8;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #C1C7CD;
+  color: #c1c7cd;
   transition: all 0.2s ease-out;
 
   &:hover {
@@ -456,13 +459,12 @@ p.def_p_forget {
 }
 
 .toggleButton {
-  color: #343A3F !important;
+  color: #343a3f !important;
 }
 
 .header {
   background: $primary-dark;
   box-shadow: none;
-
 }
 
 .agent_arow_v2 {
@@ -473,10 +475,14 @@ p.def_p_forget {
 .had_logo {
   display: none;
 }
-.data_tabal_def_min{
-  .MuiDataGrid-footerContainer{
+.data_tabal_def_min {
+  .MuiDataGrid-footerContainer {
     border: none !important;
   }
+}
+
+.date_title {
+  color: $white;
 }
 
 @media screen and (max-width: 1200px) {
@@ -520,7 +526,7 @@ p.def_p_forget {
 }
 
 p.def_had_txt {
-  color: #FFF;
+  color: #fff;
   font-size: 40px;
   font-style: normal;
   font-weight: 600;
@@ -532,12 +538,12 @@ p.def_had_txt {
 .date_min_prnt {
   .def_date_pickr {
     border-radius: 15px;
-    border: 1px solid #5A5A81;
+    border: 1px solid #5a5a81;
     background: $primary-dark;
     height: 42px;
     max-width: 265px;
     width: 100%;
-    color: #BCBCE0;
+    color: #bcbce0;
     font-family: $f_primary;
     font-size: 13px;
     font-style: normal;
@@ -549,20 +555,20 @@ p.def_had_txt {
     display: flex;
     align-items: center;
   }
-  .MuiDataGrid-selectedRowCount{
+  .MuiDataGrid-selectedRowCount {
     display: none;
   }
 }
 
 .daterangepicker td.active,
 .daterangepicker td.active:hover {
-  background-color: #88F !important;
+  background-color: #88f !important;
   border-color: transparent !important;
   color: #fff;
 }
 
 .daterangepicker .drp-buttons .btn {
-  background-color: #88F !important;
+  background-color: #88f !important;
   border: none;
   color: #fff;
 }
@@ -572,7 +578,7 @@ p.def_had_txt {
   max-width: 100%px;
 
   span {
-    color: #FFF;
+    color: #fff;
     font-family: $f_primary;
     font-size: 14px;
     font-style: normal;
@@ -583,7 +589,7 @@ p.def_had_txt {
 
   .MuiInputBase-formControl {
     border-radius: 15px;
-    border: 1px solid #5A5A81;
+    border: 1px solid #5a5a81;
     background: $primary-dark;
     height: 42px;
   }
@@ -593,7 +599,7 @@ p.def_had_txt {
   }
 
   .MuiSelect-select {
-    color: #FFF;
+    color: #fff;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -618,11 +624,11 @@ p.def_had_txt {
     width: inherit !important;
   }
 }
-.graph_bx_v2{
+.graph_bx_v2 {
   margin: 45px 0;
 }
 .graph_bx_p {
-  color: #FFF;
+  color: #fff;
   font-family: "Poppins";
   font-size: 20px;
   font-style: normal;
@@ -630,9 +636,9 @@ p.def_had_txt {
   line-height: normal;
   margin-bottom: 15px;
 }
-.agent_income{
+.agent_income {
   border-radius: 8px;
-  border: 1px solid #5A5A81;
+  border: 1px solid #5a5a81;
   background: $primary-dark;
   width: 100%;
   min-height: 85px;
@@ -640,8 +646,8 @@ p.def_had_txt {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  p{
-    color: #BCBCE0;
+  p {
+    color: #bcbce0;
     font-family: $f_primary;
     font-size: 14px;
     font-style: normal;
@@ -649,8 +655,8 @@ p.def_had_txt {
     line-height: normal;
     margin-bottom: 4px;
   }
-  h3{
-    color: #FFF;
+  h3 {
+    color: #fff;
     font-family: $f_primary;
     font-size: 20px;
     font-style: normal;
@@ -658,8 +664,8 @@ p.def_had_txt {
     line-height: normal;
   }
 }
-p.agent_p{
-  color: #FFF;
+p.agent_p {
+  color: #fff;
   font-family: $f_primary;
   font-size: 24px;
   font-style: normal;
@@ -667,92 +673,92 @@ p.agent_p{
   line-height: normal;
   margin-bottom: 17px;
 }
-.play_min_bx_set{
+.play_min_bx_set {
   margin: 37px 0;
 }
-.data_tabal_def_min.mrgn_for{
-  margin-top: 45px; 
-} 
-.tabl_p_btn_v2{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 23px;
-    p{
-      margin-bottom: 0 !important;
-    }
-  button{
+.data_tabal_def_min.mrgn_for {
+  margin-top: 45px;
+}
+.tabl_p_btn_v2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 23px;
+  p {
+    margin-bottom: 0 !important;
+  }
+  button {
     border-radius: 15px;
     background: $primary;
-    color: #FFF;
+    color: #fff;
     font-size: 14px;
     text-transform: capitalize;
     font-weight: 500;
     line-height: normal;
     width: 145px;
     height: 36px;
-    &:hover{
+    &:hover {
       background: #565698;
     }
   }
 }
-.data_tabal_def_min{
+.data_tabal_def_min {
   padding: 15px 25px;
-  background: #11141C;  
-  .tabl_p_btn{
+  background: #11141c;
+  .tabl_p_btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 18px;
-    p{
-      color: #FFF;
+    p {
+      color: #fff;
       font-family: $f_primary;
       font-size: 20px;
       font-style: normal;
       font-weight: 600;
       line-height: normal;
     }
-    button{
+    button {
       border-radius: 15px;
       background: $primary;
-      color: #FFF;
+      color: #fff;
       font-size: 14px;
       text-transform: lowercase;
       font-weight: 500;
       line-height: normal;
       width: 145px;
       height: 36px;
-      &:hover{
+      &:hover {
         background: #565698;
       }
     }
   }
-  .MuiDataGrid-columnHeaderTitle{
-    color: #BCBCE0;
+  .MuiDataGrid-columnHeaderTitle {
+    color: #bcbce0;
     font-family: $f_primary;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
   }
-  .MuiIconButton-sizeSmall{
-    svg{
-      color: #BCBCE0;
+  .MuiIconButton-sizeSmall {
+    svg {
+      color: #bcbce0;
     }
   }
-  .MuiDataGrid-root--densityStandard{
+  .MuiDataGrid-root--densityStandard {
     border: none;
   }
-  .MuiDataGrid-selectedRowCount{
+  .MuiDataGrid-selectedRowCount {
     display: none;
   }
-  .MuiDataGrid-columnHeaders{
-    background: #1A1D29;
+  .MuiDataGrid-columnHeaders {
+    background: #1a1d29;
     border-radius: 0;
     border: none;
   }
-  .MuiDataGrid-cellContent{
-    color: #FFF;
+  .MuiDataGrid-cellContent {
+    color: #fff;
     font-family: $f_primary;
     font-size: 14px;
     font-style: normal;
@@ -760,41 +766,42 @@ p.agent_p{
     line-height: 140%; /* 19.6px */
   }
   .MuiDataGrid-withBorderColor {
-    border-color: #5A5A81 ;
+    border-color: #5a5a81;
     outline: none !important;
   }
-  .MuiTablePagination-selectLabel, .MuiTablePagination-select{
-    color: #FFF;
+  .MuiTablePagination-selectLabel,
+  .MuiTablePagination-select {
+    color: #fff;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 140%; /* 19.6px */
     margin: 0;
   }
-  .MuiTablePagination-root{
+  .MuiTablePagination-root {
     width: 100%;
     border: none;
   }
-  .MuiTablePagination-selectIcon.MuiSelect-iconStandard{
+  .MuiTablePagination-selectIcon.MuiSelect-iconStandard {
     color: $primary;
   }
-  .MuiTablePagination-displayedRows{
-    color: #FFF;
+  .MuiTablePagination-displayedRows {
+    color: #fff;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 140%; /* 19.6px */
-    margin-bottom: 0; 
+    margin-bottom: 0;
   }
-  .MuiSvgIcon-fontSizeMedium{
+  .MuiSvgIcon-fontSizeMedium {
     color: $primary;
   }
 }
-.player_results_graf_bx{
+.player_results_graf_bx {
   padding: 10px 22px 13px 15px;
   background: $primary-dark;
-  p{
-    color: #FFF;
+  p {
+    color: #fff;
     font-family: $f_primary;
     font-size: 20px;
     font-style: normal;
@@ -802,63 +809,64 @@ p.agent_p{
     line-height: normal;
     margin-left: 5px;
   }
-  img{
+  img {
     width: 100%;
   }
 }
-.Choose_Player{
+.Choose_Player {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 23px;
 
-  p{
+  p {
     margin-bottom: 0 !important;
   }
-  .def_selct{
+  .def_selct {
     width: 180px;
   }
-  .def_selct .MuiInputBase-formControl{
+  .def_selct .MuiInputBase-formControl {
     width: 180px;
     border-radius: 6px;
     background: $primary;
   }
 }
-.def_modal{
+.def_modal {
   .sign_min {
     max-width: 500px;
-    background: #1A1D29;
-    .def_h2_hd.mrg_colr{
+    background: #1a1d29;
+    .def_h2_hd.mrg_colr {
       color: #fff !important;
       margin-bottom: 32px;
     }
   }
-  .selct_minbx.mrg_sp, .input-box{
+  .selct_minbx.mrg_sp,
+  .input-box {
     margin: 15px 0;
   }
-  .def_btn{
+  .def_btn {
     margin-top: 20px;
   }
 }
-.textarea_def{
+.textarea_def {
   background: #11141c !important;
   padding: 10px;
   outline: none !important;
-  border: 1px solid #5A5A81;
+  border: 1px solid #5a5a81;
   border-radius: 15px;
   width: 100%;
-  color: #FFF;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   height: 65px;
-  &::placeholder{
-    color: #BCBCE0;
+  &::placeholder {
+    color: #bcbce0;
   }
 }
-.def_modal.dilog{
-  .MuiDialog-paperScrollPaper{
+.def_modal.dilog {
+  .MuiDialog-paperScrollPaper {
     width: 100%;
     margin: 0;
     padding: 10px;
@@ -870,16 +878,16 @@ p.agent_p{
     padding: 30px 5px;
   }
 }
-button.Delete{
-  background: #FF4949;
+button.Delete {
+  background: #ff4949;
   text-transform: capitalize;
-  &:hover{
+  &:hover {
     background: #a33c3c;
   }
 }
-.Delete_pop{
-  p{
-    color: #FFF;
+.Delete_pop {
+  p {
+    color: #fff;
     text-align: center;
     font-size: 20px;
     font-style: normal;
@@ -889,18 +897,18 @@ button.Delete{
     width: 100%;
   }
 }
-.settlements_modl{
-  .def_selct .MuiSelect-select{
-    color: #BCBCE0;
+.settlements_modl {
+  .def_selct .MuiSelect-select {
+    color: #bcbce0;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
   }
 }
-button.edit_btn{
+button.edit_btn {
   text-transform: capitalize;
-  color: #FFF;
+  color: #fff;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -908,33 +916,33 @@ button.edit_btn{
   border-radius: 8px;
   background: $primary;
   padding: 6px 8px;
-  &:hover{
+  &:hover {
     background: rgb(93, 93, 181);
   }
 }
-button.edt_btn_ic{
+button.edt_btn_ic {
   height: auto;
   padding: 0;
   width: 0;
   min-width: fit-content;
-  &:hover{
+  &:hover {
     opacity: 0.8;
   }
 }
-button.delet_btn_ic{
+button.delet_btn_ic {
   margin-left: 24px;
-  svg{
-    color: #FF4949 !important;
+  svg {
+    color: #ff4949 !important;
   }
 }
-.user_info_min{
+.user_info_min {
   margin-bottom: 20px;
-  background: #11141C;
+  background: #11141c;
   max-width: 674px;
   width: 100%;
   padding: 15px 25px 25px 25px;
-  h2{
-    color: #FFF;
+  h2 {
+    color: #fff;
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
@@ -942,34 +950,34 @@ button.delet_btn_ic{
     margin-bottom: 12px;
   }
 }
-.user_info_conti{
+.user_info_conti {
   display: flex;
   align-items: center;
   height: 42px;
-  border-bottom: 1px solid #5A5A81;
-  width: 100%; 
-  &:last-child{
+  border-bottom: 1px solid #5a5a81;
+  width: 100%;
+  &:last-child {
     border: none;
   }
- p{
-  color: #BCBCE0;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  width: 160px;
- }
- span{
-  color: #FFF;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 19.6px */
- }
+  p {
+    color: #bcbce0;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 160px;
+  }
+  span {
+    color: #fff;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+  }
 }
 @media screen and (max-width: 1200px) {
   p.def_had_txt {
-    color: #FFF;
+    color: #fff;
     font-size: 35px;
   }
   .data_tabal_def_min.mrgn_for {
@@ -984,22 +992,22 @@ button.delet_btn_ic{
   .selct_minbx {
     margin-bottom: 42px;
   }
-  .graph_bx_v2{
+  .graph_bx_v2 {
     margin: 35px 0;
   }
 }
 @media screen and (max-width: 991px) {
-  .data_tabal_def_min.mrgn_for{
-    margin-top: 35px;  
-  } 
-  .play_min_bx_set{
+  .data_tabal_def_min.mrgn_for {
+    margin-top: 35px;
+  }
+  .play_min_bx_set {
     margin: 30px 0;
   }
   p.agent_p {
     font-size: 20px;
     margin-bottom: 10px;
   }
-  .graph_bx_v2{
+  .graph_bx_v2 {
     margin: 30px 0;
   }
   .graph_bx_p {
@@ -1022,8 +1030,8 @@ button.delet_btn_ic{
   }
 }
 @media screen and (max-width: 767px) {
-  .Delete_pop{
-    p{
+  .Delete_pop {
+    p {
       font-size: 17px;
     }
   }
@@ -1036,9 +1044,9 @@ button.delet_btn_ic{
   .Choose_Player .def_selct .MuiInputBase-formControl {
     width: 160px;
   }
-  .data_tabal_def_min.mrgn_for{
-    margin-top: 30px;  
-  } 
+  .data_tabal_def_min.mrgn_for {
+    margin-top: 30px;
+  }
   p.def_had_txt {
     margin-bottom: 20px;
     font-size: 23px;
@@ -1047,19 +1055,19 @@ button.delet_btn_ic{
 @media screen and (max-width: 575px) {
   .user_info_conti p {
     width: 130px;
-}
+  }
   .tabl_p_btn_v2 button {
     font-size: 12px;
     width: 96px;
     height: 30px;
   }
-  .tabl_p_btn_v2{
+  .tabl_p_btn_v2 {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
   }
-  .Choose_Player{
+  .Choose_Player {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
@@ -1071,21 +1079,21 @@ button.delet_btn_ic{
   p.def_had_txt {
     font-size: 20px;
   }
-  .data_tabal_def_min .tabl_p_btn{
+  .data_tabal_def_min .tabl_p_btn {
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    gap: 9px
+    gap: 9px;
   }
   .data_tabal_def_min .tabl_p_btn button {
     font-size: 13px;
     width: 110px;
     height: 30px;
-}
-  .data_tabal_def_min.mrgn_for{
-    margin-top: 24px;  
-  } 
-  .graph_bx_v2{
+  }
+  .data_tabal_def_min.mrgn_for {
+    margin-top: 24px;
+  }
+  .graph_bx_v2 {
     margin: 25px 0;
   }
   .selct_minbx {
@@ -1099,7 +1107,6 @@ button.delet_btn_ic{
   }
 }
 // Settlements
-$primary: #88F;
-$secondary: #A2A9B0;
-$primary-dark: #11141C;
-
+$primary: #88f;
+$secondary: #a2a9b0;
+$primary-dark: #11141c;

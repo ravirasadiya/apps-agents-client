@@ -1,68 +1,103 @@
-import Sign from '@/component/Login/Sign'
-import AuthLayout from '@/component/layouts/AuthLayout'
-import React from 'react'
-import { Box, Button, Typography } from '@mui/material'
-import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+"use clients";
+
+import AuthLayout from "@/component/layouts/AuthLayout";
+import LoginForm from "@/component/login/login-form";
+import { LoginFormFields, loginFormSchema } from "@/schemas/login";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
+import { forwardRef, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { getRecords, LocalStorageKeys, setLocalStorage } from "../helper";
+import { saveRecord } from "../helper/_api_wrapper";
+import { EndpointUrl, endpointUrls } from "../helper/endpoint";
+import { useToken } from "../hooks/get-user-login-status";
+import { LoginResponse } from "../types/login";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { Button } from "@mui/material";
+import SnackbarUI, { SnackbarRef } from "@/component/ui/snackbar/snackbar";
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function Login() {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [token, setToken] = useToken();
+  const _router = useRouter();
+  const snackBarRef = useRef<SnackbarRef>(null);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  useEffect(() => {
+    if (token) {
+      _router.push("/");
+    }
+  }, [token]);
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormFields>({
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: any) => {
+    try {
+      const validatedData = loginFormSchema.parse(data);
+      console.log("Form data is valid:", validatedData);
+      setLoading(true);
+      saveRecord(endpointUrls[EndpointUrl.LOGIN], validatedData)
+        .then(async (response: LoginResponse) => {
+          // [TODO] mock response override to the api response.
+          // const { refresh } = mockLoginResponse;
+          const { refresh, access } = response ?? { refresh: "", access: "" };
+          if (refresh) {
+            setLocalStorage(LocalStorageKeys.ACCESS_TOKEN, access);
+            setLocalStorage(LocalStorageKeys.REFRESH_TOKEN, refresh);
+            await getRecords(endpointUrls[EndpointUrl.ME])
+              .then((profile) => {
+                setLocalStorage(LocalStorageKeys.PROFILE, profile);
+              })
+              .catch((error) => {
+                // console.log("error", error);
+                snackBarRef.current?.displaySnackbar(
+                  "Error: There was some error while fetching the profile records",
+                  "error"
+                );
+              });
+            snackBarRef.current?.displaySnackbar(
+              "Login successfully",
+              "success"
+            );
+            _router.push("/");
+          }
+        })
+        .catch((e) => console.error("getting errors while saving records", e))
+        .finally(() => setLoading(false));
+    } catch (error) {
+      setLoading(false);
+      console.error("Form validation failed:", error);
+    }
   };
+
   return (
     <AuthLayout>
+      <LoginForm
+        onSubmit={handleSubmit(onSubmit)}
+        errors={errors}
+        register={register}
+        isDataSubmitted={isLoading}
+      />
       <div>
-        <Box className="sign">
-          <Box className="sign_min">
-            <Typography component={"h2"} className='def_h2_hd'>LOGO HERE</Typography>
-            <Typography className='def_p_titl'>Login</Typography>
-
-            <Box className="flx_log_input">
-              <Box component="form">
-                <Box className="input-box">
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    autoComplete="username"
-                    placeholder="Email"
-                    autoFocus
-                    className="user-input"
-                  />
-                </Box>
-                <Box className="input-box">
-                  <input
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    className="user-input"
-                    autoComplete="current-password"
-                    placeholder="Password"
-                  />
-                  <Box className="toggleButtonv2" onClick={handleClickShowPassword}>
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </Box>
-                </Box>
-              </Box>
-              <Button className='def_btn'>Login</Button>
-            </Box>
-
-          </Box>
-        </Box>
+        <SnackbarUI ref={snackBarRef} />
       </div>
     </AuthLayout>
-  )
+  );
 }

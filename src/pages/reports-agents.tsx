@@ -1,13 +1,14 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState } from "react";
 import Head from "next/head";
 import Layout from "@/component/layouts/Layout";
 import { Box, Grid } from "@mui/material";
-import Typography from '@mui/material/Typography';
-import ReportsAgentsOne from '@/component/ReportsAgents/ReportsAgentsOneTabal';
-import ReportsAgentsTwoTabl from '@/component/ReportsAgents/ReportsAgentsTwoTabl';
-import DateAndSelect from '@/component/dashboard/DateAndSelect';
+import Typography from "@mui/material/Typography";
+import ReportsAgentsOne from "@/component/ReportsAgents/ReportsAgentsOneTabal";
+import ReportsAgentsTwoTabl from "@/component/ReportsAgents/ReportsAgentsTwoTabl";
+import DateAndSelect from "@/component/dashboard/DateAndSelect";
 
 export default function ReportsAgents() {
+  const onFilterChanged = () => {};
 
   return (
     <>
@@ -20,8 +21,10 @@ export default function ReportsAgents() {
         </Head>
         <div>
           <Box>
-            <Typography className="def_had_txt">Reports (for agents)</Typography>
-            <DateAndSelect />
+            <Typography className="def_had_txt">
+              Reports (for agents)
+            </Typography>
+            <DateAndSelect onFilterChange={onFilterChanged} />
             <ReportsAgentsOne />
             <ReportsAgentsTwoTabl />
           </Box>

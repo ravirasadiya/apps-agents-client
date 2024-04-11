@@ -1,49 +1,126 @@
-import React, { Component, useState } from 'react';
-import Head from "next/head";
+import SettlementsTable from "@/component/Settlements/SettlementsTable";
+import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 import Layout from "@/component/layouts/Layout";
-import { Box, Button, Grid, Modal } from "@mui/material";
-import Typography from '@mui/material/Typography';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import "bootstrap/dist/css/bootstrap.css";
+import SnackbarUI, { SnackbarRef } from "@/component/ui/snackbar/snackbar";
+import { EndpointUrl, endpointUrls, getRecords, saveRecord } from "@/helper";
+import { currentDate, getDateFromISOString } from "@/utils/get-date";
+import { Box, Button } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import DateRangePicker from 'react-bootstrap-daterangepicker';
-import FormControl from '@mui/material/FormControl';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import MenuItem from '@mui/material/MenuItem';
-import Dialog from '@mui/material/Dialog';
-import SettlementsTabal from '@/component/Settlements/SettlementsTabal';
-import DateAndSelect from '@/component/dashboard/DateAndSelect';
-import moment from 'moment';
+import "bootstrap/dist/css/bootstrap.css";
+import Head from "next/head";
+import { useRef, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
+interface Currency {
+  id: number;
+  currency: string;
+}
 
+interface Player {
+  id: number;
+  player: string;
+}
 
 export default function Settlements() {
-  const [age, setAge] = React.useState('');
+  const [filters, setFilters] = useState<Filters>();
+  const [startDate, setStartDate] = useState<Date | null>(currentDate());
+  const [currencyList, setCurrencyList] = useState<Currency[]>([]);
+  const [selectedCurrency, setSelectedCurrency] = useState("");
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [settlementSaved, setSettlementSaved] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState("");
+  const [transactionUSD, setTransactionUSD] = useState("");
+  const [transactionValue, setTransactionVal] = useState("");
+  const [exchangeRate, setExchangeRate] = useState("");
+  const [description, setDescription] = useState("");
+  const snackBarRef = useRef<SnackbarRef>(null);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+  const handlePlayerChanged = (event: SelectChangeEvent) => {
+    setSelectedPlayer(event?.target?.value);
   };
 
-  //datepicker
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
-  
-
-  const handleEvent = (event: any, picker: any) => {
-    setFromDate(picker.startDate._d.toISOString());
-    setToDate(picker.endDate._d.toISOString());
+  const handleCurrencyChanged = (event: SelectChangeEvent) => {
+    setSelectedCurrency(event?.target?.value);
   };
 
   //pop//
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    getCurrencyList();
+    getPlayersList();
+  };
+
+  const getPlayersList = () => {
+    getRecords(endpointUrls[EndpointUrl.AGENT_PLAYER_LIST]).then((players) => {
+      const playersRecord = players.map((item: Currency) => ({
+        ...item,
+        id: item.id?.toString(),
+      }));
+      setPlayers(players);
+      setSelectedPlayer(players?.[0]?.id);
+    });
+  };
+
+  const getCurrencyList = () => {
+    getRecords(endpointUrls[EndpointUrl.AGENT_CURRENCY_LIST]).then((res) => {
+      const currencies = res.map((item: Currency) => ({
+        ...item,
+        id: item.id?.toString(),
+      }));
+      setCurrencyList(currencies);
+      setSelectedCurrency(currencies?.[0]?.id);
+    });
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const onFilterChanged = (filter: Filters) => {
+    console.log("on filter update", filter);
+    setFilters(filter);
+  };
+
+  const handleDateSelected = (date: Date) => {
+    setStartDate(date);
+  };
+
+  const handleOnChanged = (date: Date) => {
+    setStartDate(date);
+  };
+
+  const addSettlement = () => {
+    setSettlementSaved(false);
+    saveRecord(
+      endpointUrls[EndpointUrl.AGENT_CREATE_SETTLEMENT],
+      {
+        player: parseInt(selectedPlayer, 10),
+        date: getDateFromISOString(startDate),
+        transactionUSD: transactionUSD?.toString() || "0",
+        transactionValue: transactionValue.toString() || "0",
+        exchangeRate: exchangeRate.toString() || "0",
+        currency: parseInt(selectedCurrency, 10),
+        description: description,
+      },
+      true
+    ).then((saveSettlement) => {
+      snackBarRef.current?.displaySnackbar(
+        "Settlement is created successfully",
+        "success"
+      );
+      setSettlementSaved(true);
+      setOpen(false);
+    });
+  };
+
   return (
     <>
       <Layout>
@@ -59,83 +136,129 @@ export default function Settlements() {
               <Typography className="def_had_txt">Settlements</Typography>
               <Button onClick={handleClickOpen}>Add Aettlement</Button>
             </Box>
-            <DateAndSelect />
-            <SettlementsTabal />
+            <DateAndSelect onFilterChange={onFilterChanged} />
+            <SettlementsTable
+              onSettlementSaved={settlementSaved}
+              filters={filters}
+            />
           </Box>
         </div>
+        <div>
+          <SnackbarUI ref={snackBarRef} />
+        </div>
       </Layout>
-
 
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        className='def_modal dilog settlements_modl'
+        className="def_modal dilog settlements_modl"
       >
         <Box>
           <Box className="sign">
             <Box className="sign_min">
-              <Typography component={"h2"} className='def_h2_hd mrg_colr'>Add Settlements</Typography>
+              <Typography component={"h2"} className="def_h2_hd mrg_colr">
+                Add Settlements
+              </Typography>
 
               <Box className="flx_log_input">
                 <Box component="form">
-                  <Box className="date_min_prnt">
-                    <DateRangePicker
-                      initialSettings={{ startDate: '1/1/2014', endDate: '3/1/2014' }}
-                      onEvent={handleEvent}
-                    >
-                      <button className='def_date_pickr'>
-                        {moment(fromDate).format('LL')}
-                        &nbsp; - &nbsp;
-                        {moment(toDate).format('LL')}
-                        <KeyboardArrowDownIcon />
-                      </button>
-                    </DateRangePicker>
-                    <Box className='selct_minbx mrg_sp'>
-                      <FormControl className='def_selct'>
-                        <Select
-                          value={age}
-                          onChange={handleChange}
-                          displayEmpty
-                          inputProps={{ 'aria-label': 'Without label' }}
-                          className='selct'
-                        >
-                          <MenuItem value="">
-                            None
+                  <Box className="input-box">
+                    <FormControl className="def_selct">
+                      <Select
+                        value={selectedPlayer}
+                        onChange={handlePlayerChanged}
+                        displayEmpty={true}
+                        inputProps={{ "aria-label": "Without label" }}
+                        className="selct"
+                      >
+                        {players.map((item: Player) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.player}
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Box>
+                  <Box className="date_min_prnt">
+                    <FormControl className="def_selct">
+                      <DatePicker
+                        className="user-input"
+                        selected={startDate}
+                        onChange={handleOnChanged}
+                        onSelect={handleDateSelected}
+                      />
+                    </FormControl>
+                  </Box>
+
                   <Box className="input-box">
                     <input
-                      type="text"
-                      id="username"
-                      name="username"
-                      autoComplete="username"
-                      placeholder="Amount"
-                      autoFocus
+                      type="number"
+                      id="transactionUSD"
+                      onChange={(e) => setTransactionUSD(e.target.value)}
+                      name="transactionUSD"
+                      placeholder="Transaction USD"
                       className="user-input"
                     />
                   </Box>
 
-                  <textarea id="story" name="story" placeholder='Description' className='textarea_def'>
-                  </textarea>
-                </Box>
-                <Button className='def_btn'>Add settlement</Button>
-              </Box>
+                  <Box className="input-box">
+                    <input
+                      type="number"
+                      onChange={(e) => setTransactionVal(e.target.value)}
+                      id="transactionVal"
+                      name="transactionVal"
+                      placeholder="Transaction value"
+                      className="user-input"
+                    />
+                  </Box>
 
+                  <Box className="input-box">
+                    <input
+                      type="number"
+                      id="exchangeRate"
+                      onChange={(e) => setExchangeRate(e.target.value)}
+                      name="exchangeRate"
+                      placeholder="Exchange Rate"
+                      className="user-input"
+                    />
+                  </Box>
+
+                  <Box className="selct_minbx mrg_sp">
+                    <FormControl className="def_selct">
+                      <Select
+                        value={selectedCurrency}
+                        onChange={handleCurrencyChanged}
+                        displayEmpty={true}
+                        inputProps={{ "aria-label": "Without label" }}
+                        className="selct"
+                      >
+                        {currencyList.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.currency}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+
+                  <textarea
+                    id="story"
+                    name="story"
+                    placeholder="Description"
+                    className="textarea_def"
+                    onChange={(e) => setDescription(e.target.value)}
+                  ></textarea>
+                </Box>
+                <Button onClick={addSettlement} className="def_btn">
+                  Add settlement
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>
       </Dialog>
-
-
-
     </>
   );
 }

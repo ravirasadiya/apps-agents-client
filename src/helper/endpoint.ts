@@ -27,7 +27,7 @@ export const endpointUrls: Record<EndpointUrl, string> = {
   [EndpointUrl.ME]: `${domainWithOutVersion}/user/me`,
   [EndpointUrl.AGENT_PLAYER_RESULTS]: `${domainWithOutVersion}/views/agents-summary/player-results/?from_date=:fromDate&to_date=:toDate`,
   [EndpointUrl.AGENT_CLUB_RESULTS]: `${domainWithOutVersion}/views/agents-summary/clubs-results/?from_date=:fromDate&to_date=:toDate`,
-  [EndpointUrl.AGENT_SETTLEMENTS]: `${domainWithOutVersion}/views/agents-settlements/settlements/?from_date=:fromDate&to_date=:toDate`,
+  [EndpointUrl.AGENT_SETTLEMENTS]: `${domainWithOutVersion}/views/agents-settlements/settlements/?from_date=:fromDate&to_date=:toDate&club=:club`,
 };
 
 export default { EndpointUrl, endpointUrls };

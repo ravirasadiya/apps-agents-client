@@ -1,7 +1,6 @@
 import SettlementsTable from "@/component/Settlements/SettlementsTable";
 import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 import Layout from "@/component/layouts/Layout";
-import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Box, Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -13,11 +12,11 @@ import "bootstrap-daterangepicker/daterangepicker.css";
 import "bootstrap/dist/css/bootstrap.css";
 import moment from "moment";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 
 export default function Settlements() {
-  const [filters, setFilters] = useState();
+  const [filters, setFilters] = useState<Filters>();
   const [fromDate, setFromData] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
 
@@ -38,7 +37,7 @@ export default function Settlements() {
 
   const onFilterChanged = (filter: Filters) => {
     console.log("on filter update", filter);
-    setFilters(filters);
+    setFilters(filter);
   };
 
   const handleEvent = () => {};

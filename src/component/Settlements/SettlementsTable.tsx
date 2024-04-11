@@ -1,4 +1,5 @@
 import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
+import { generateUrl } from "@/helper/_api_wrapper";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Typography } from "@mui/material";
@@ -35,12 +36,14 @@ export default function SettlementsTable(props: any) {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    console.log('get records settlement')
+    console.log("get records settlement");
     getSettlementsRecord();
   }, [props.filters]);
 
   const getSettlementsRecord = () => {
-    getRecords(endpointUrls[EndpointUrl.AGENT_SETTLEMENTS]).then((response) => {
+    getRecords(
+      generateUrl(endpointUrls[EndpointUrl.AGENT_SETTLEMENTS], props.filters)
+    ).then((response) => {
       console.log("response::", response);
       setRows(response);
     });

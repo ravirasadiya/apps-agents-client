@@ -36,6 +36,10 @@ export default function SettlementsTable(props: any) {
   const [rows, setRows] = useState([]);
   const [selectedRow, setSelectedRow] = useState<string>("");
 
+  useEffect(() => {
+    getSettlementsRecord();
+  }, [props.onSettlementSaved]);
+
   const openConfirmationDialog = (params: any, event: any) => {
     const getActionByElementId = document.getElementById("delete");
     if (getActionByElementId?.id === "delete") {
@@ -43,7 +47,6 @@ export default function SettlementsTable(props: any) {
       setOpen(true);
     }
   };
-
 
   const deleteSettlements = () => {
     deleteRecord(

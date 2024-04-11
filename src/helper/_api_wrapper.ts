@@ -49,9 +49,20 @@ export const getRecords = async (apiUrl: string, options?: any) => {
 
 // [TODO] Need to verify the error response of the
 // data.
-export const saveRecord = async (apiUrl: string, options?: any) => {
+export const saveRecord = async (
+  apiUrl: string,
+  options?: any,
+  isTokenPassed?: boolean
+) => {
+  const token = getLocalStorage(LocalStorageKeys.ACCESS_TOKEN);
   return await axios
-    .post(apiUrl, options, defaultHeader("POST", options))
+    .post(
+      apiUrl,
+      options,
+      isTokenPassed
+        ? defaultHeaderWithToken("POST", token)
+        : defaultHeader("POST", options)
+    )
     .then(function (response) {
       return response.data;
     })
@@ -100,7 +111,6 @@ export const generateUrl = (url: string, filters?: Filters) => {
       getLocalStorageFilters.endDate ??
       currentDateInFormat();
     const club = filters?.club ?? getLocalStorageFilters.club ?? "KOBERGS";
-    console.log("from date", fromDate, toDate, club);
     return url
       ?.replace(":fromDate", fromDate)
       ?.replace(":toDate", toDate)
@@ -113,4 +123,5 @@ export default {
   getRecords,
   saveRecord,
   updateRecord,
+  generateUrl,
 };

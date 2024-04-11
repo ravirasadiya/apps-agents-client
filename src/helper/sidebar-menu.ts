@@ -9,7 +9,7 @@ const menuItems = [
         index: 0,
         title: "Summary",
         key: "summary",
-        url: "/",
+        url: "/dashboard",
         className: "active",
       },
       {
@@ -53,13 +53,13 @@ const menuItems = [
     title: "Player",
     index: 0,
     display: true,
-    key: "players",
+    key: "player",
     submenus: [
       {
         index: 0,
         title: "Summary",
         key: "summary",
-        url: "/",
+        url: "/dashboard",
         className: "",
       },
       {

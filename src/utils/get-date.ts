@@ -2,7 +2,7 @@ import moment from "moment";
 
 export const dateFormat = "YYYY-MM-DD";
 
-export const getDateFromISOString = (date: Date): string => {
+export const getDateFromISOString = (date: Date | null): string => {
   if (!date) return "";
   return moment(date).format(dateFormat);
 };

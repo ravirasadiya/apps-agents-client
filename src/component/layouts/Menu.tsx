@@ -9,7 +9,7 @@ export default function Menu() {
   const router = useRouter();
   const [sideBarItems, setSidebarItems] = useState(menuItems);
   const handleActive = (key: any) => {
-    router.replace(key.url);
+    console.log("key", key);
   };
   return (
     <Box className="draw_link">
@@ -25,7 +25,9 @@ export default function Menu() {
                 className={submenu.className}
                 onClick={() => handleActive(submenu)}
               >
-                <Link href={submenu.url}>{submenu.title}</Link>
+                <Link prefetch={true} href={submenu.url + "?type=" + item.key}>
+                  {submenu.title}
+                </Link>
                 {/* <Link href={submenu.url.toString()}>{submenu.title}</Link> */}
               </li>
             </ul>

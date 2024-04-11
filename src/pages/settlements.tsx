@@ -1,8 +1,9 @@
 import SettlementsTable from "@/component/Settlements/SettlementsTable";
 import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 import Layout from "@/component/layouts/Layout";
-import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
-import { currentDate } from "@/utils/get-date";
+import SnackbarUI, { SnackbarRef } from "@/component/ui/snackbar/snackbar";
+import { EndpointUrl, endpointUrls, getRecords, saveRecord } from "@/helper";
+import { currentDate, getDateFromISOString } from "@/utils/get-date";
 import { Box, Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import FormControl from "@mui/material/FormControl";
@@ -12,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Head from "next/head";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,14 +22,31 @@ interface Currency {
   currency: string;
 }
 
+interface Player {
+  id: number;
+  player: string;
+}
+
 export default function Settlements() {
   const [filters, setFilters] = useState<Filters>();
   const [startDate, setStartDate] = useState<Date | null>(currentDate());
   const [currencyList, setCurrencyList] = useState<Currency[]>([]);
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
+  const [selectedCurrency, setSelectedCurrency] = useState("");
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [settlementSaved, setSettlementSaved] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState("");
+  const [transactionUSD, setTransactionUSD] = useState("");
+  const [transactionValue, setTransactionVal] = useState("");
+  const [exchangeRate, setExchangeRate] = useState("");
+  const [description, setDescription] = useState("");
+  const snackBarRef = useRef<SnackbarRef>(null);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    // no data
+  const handlePlayerChanged = (event: SelectChangeEvent) => {
+    setSelectedPlayer(event?.target?.value);
+  };
+
+  const handleCurrencyChanged = (event: SelectChangeEvent) => {
+    setSelectedCurrency(event?.target?.value);
   };
 
   //pop//
@@ -37,6 +55,18 @@ export default function Settlements() {
   const handleClickOpen = () => {
     setOpen(true);
     getCurrencyList();
+    getPlayersList();
+  };
+
+  const getPlayersList = () => {
+    getRecords(endpointUrls[EndpointUrl.AGENT_PLAYER_LIST]).then((players) => {
+      const playersRecord = players.map((item: Currency) => ({
+        ...item,
+        id: item.id?.toString(),
+      }));
+      setPlayers(players);
+      setSelectedPlayer(players?.[0]?.id);
+    });
   };
 
   const getCurrencyList = () => {
@@ -45,7 +75,6 @@ export default function Settlements() {
         ...item,
         id: item.id?.toString(),
       }));
-      console.log("currencies", currencies);
       setCurrencyList(currencies);
       setSelectedCurrency(currencies?.[0]?.id);
     });
@@ -61,11 +90,35 @@ export default function Settlements() {
   };
 
   const handleDateSelected = (date: Date) => {
-    console.log(date);
+    setStartDate(date);
   };
 
-  const handleOnChanged = () => {
-    console.log("on date changed");
+  const handleOnChanged = (date: Date) => {
+    setStartDate(date);
+  };
+
+  const addSettlement = () => {
+    setSettlementSaved(false);
+    saveRecord(
+      endpointUrls[EndpointUrl.AGENT_CREATE_SETTLEMENT],
+      {
+        player: parseInt(selectedPlayer, 10),
+        date: getDateFromISOString(startDate),
+        transactionUSD: transactionUSD?.toString() || "0",
+        transactionValue: transactionValue.toString() || "0",
+        exchangeRate: exchangeRate.toString() || "0",
+        currency: parseInt(selectedCurrency, 10),
+        description: description,
+      },
+      true
+    ).then((saveSettlement) => {
+      snackBarRef.current?.displaySnackbar(
+        "Settlement is created successfully",
+        "success"
+      );
+      setSettlementSaved(true);
+      setOpen(false);
+    });
   };
 
   return (
@@ -84,8 +137,14 @@ export default function Settlements() {
               <Button onClick={handleClickOpen}>Add Aettlement</Button>
             </Box>
             <DateAndSelect onFilterChange={onFilterChanged} />
-            <SettlementsTable filters={filters} />
+            <SettlementsTable
+              onSettlementSaved={settlementSaved}
+              filters={filters}
+            />
           </Box>
+        </div>
+        <div>
+          <SnackbarUI ref={snackBarRef} />
         </div>
       </Layout>
 
@@ -105,6 +164,23 @@ export default function Settlements() {
 
               <Box className="flx_log_input">
                 <Box component="form">
+                  <Box className="input-box">
+                    <FormControl className="def_selct">
+                      <Select
+                        value={selectedPlayer}
+                        onChange={handlePlayerChanged}
+                        displayEmpty={true}
+                        inputProps={{ "aria-label": "Without label" }}
+                        className="selct"
+                      >
+                        {players.map((item: Player) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.player}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
                   <Box className="date_min_prnt">
                     <FormControl className="def_selct">
                       <DatePicker
@@ -114,32 +190,57 @@ export default function Settlements() {
                         onSelect={handleDateSelected}
                       />
                     </FormControl>
-                    <Box className="selct_minbx mrg_sp">
-                      <FormControl className="def_selct">
-                        <Select
-                          value={selectedCurrency}
-                          onChange={handleChange}
-                          displayEmpty={true}
-                          inputProps={{ "aria-label": "Without label" }}
-                          className="selct"
-                        >
-                          {currencyList.map((item) => (
-                            <MenuItem value={item.id}>{item.currency}</MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </Box>
                   </Box>
+
                   <Box className="input-box">
                     <input
-                      type="text"
-                      id="username"
-                      name="username"
-                      autoComplete="username"
-                      placeholder="Amount"
-                      autoFocus
+                      type="number"
+                      id="transactionUSD"
+                      onChange={(e) => setTransactionUSD(e.target.value)}
+                      name="transactionUSD"
+                      placeholder="Transaction USD"
                       className="user-input"
                     />
+                  </Box>
+
+                  <Box className="input-box">
+                    <input
+                      type="number"
+                      onChange={(e) => setTransactionVal(e.target.value)}
+                      id="transactionVal"
+                      name="transactionVal"
+                      placeholder="Transaction value"
+                      className="user-input"
+                    />
+                  </Box>
+
+                  <Box className="input-box">
+                    <input
+                      type="number"
+                      id="exchangeRate"
+                      onChange={(e) => setExchangeRate(e.target.value)}
+                      name="exchangeRate"
+                      placeholder="Exchange Rate"
+                      className="user-input"
+                    />
+                  </Box>
+
+                  <Box className="selct_minbx mrg_sp">
+                    <FormControl className="def_selct">
+                      <Select
+                        value={selectedCurrency}
+                        onChange={handleCurrencyChanged}
+                        displayEmpty={true}
+                        inputProps={{ "aria-label": "Without label" }}
+                        className="selct"
+                      >
+                        {currencyList.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.currency}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Box>
 
                   <textarea
@@ -147,9 +248,12 @@ export default function Settlements() {
                     name="story"
                     placeholder="Description"
                     className="textarea_def"
+                    onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </Box>
-                <Button className="def_btn">Add settlement</Button>
+                <Button onClick={addSettlement} className="def_btn">
+                  Add settlement
+                </Button>
               </Box>
             </Box>
           </Box>

@@ -15,13 +15,7 @@ import {
   getDateOfBeforeOneMonthInFormat,
 } from "@/utils/get-date";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {
-  Box,
-  FormControl,
-  Grid,
-  MenuItem,
-  Select
-} from "@mui/material";
+import { Box, FormControl, Grid, MenuItem, Select } from "@mui/material";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import "bootstrap/dist/css/bootstrap.css";
 import moment from "moment";
@@ -103,7 +97,7 @@ export default function DateAndSelect(props: Readonly<DateAndSelectProps>) {
         <Box className="date_min_prnt">
           <DateRangePicker
             initialSettings={{ startDate: fromDate, endDate: toDate }}
-            onEvent={handleEvent}
+            onApply={handleEvent}
           >
             <button className="def_date_pickr">
               {moment(fromDate).format("LL")}

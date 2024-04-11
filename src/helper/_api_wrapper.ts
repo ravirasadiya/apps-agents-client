@@ -71,6 +71,21 @@ export const updateRecord = async (apiUrl: string, options?: any) => {
     });
 };
 
+export const deleteRecord = async (apiUrl: string) => {
+  const token = getLocalStorage(LocalStorageKeys.ACCESS_TOKEN);
+  return await axios
+    .delete(apiUrl, defaultHeaderWithToken("DELETE", token))
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      throw new Error(
+        error?.response ||
+          "An error occurred while attempting to delete the records. Please try again later"
+      );
+    });
+};
+
 export const generateUrl = (url: string, filters?: Filters) => {
   const generateUrlEndPoint = () => {
     const getLocalStorageFilters = JSON.parse(

@@ -1,7 +1,8 @@
 import SettlementsTable from "@/component/Settlements/SettlementsTable";
 import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 import Layout from "@/component/layouts/Layout";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
+import { currentDate } from "@/utils/get-date";
 import { Box, Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import FormControl from "@mui/material/FormControl";
@@ -10,15 +11,21 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import "bootstrap/dist/css/bootstrap.css";
-import moment from "moment";
 import Head from "next/head";
 import { useState } from "react";
-import DateRangePicker from "react-bootstrap-daterangepicker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+interface Currency {
+  id: number;
+  currency: string;
+}
 
 export default function Settlements() {
   const [filters, setFilters] = useState<Filters>();
-  const [fromDate, setFromData] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(currentDate());
+  const [currencyList, setCurrencyList] = useState<Currency[]>([]);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
 
   const handleChange = (event: SelectChangeEvent) => {
     // no data
@@ -29,6 +36,19 @@ export default function Settlements() {
 
   const handleClickOpen = () => {
     setOpen(true);
+    getCurrencyList();
+  };
+
+  const getCurrencyList = () => {
+    getRecords(endpointUrls[EndpointUrl.AGENT_CURRENCY_LIST]).then((res) => {
+      const currencies = res.map((item: Currency) => ({
+        ...item,
+        id: item.id?.toString(),
+      }));
+      console.log("currencies", currencies);
+      setCurrencyList(currencies);
+      setSelectedCurrency(currencies?.[0]?.id);
+    });
   };
 
   const handleClose = () => {
@@ -40,7 +60,13 @@ export default function Settlements() {
     setFilters(filter);
   };
 
-  const handleEvent = () => {};
+  const handleDateSelected = (date: Date) => {
+    console.log(date);
+  };
+
+  const handleOnChanged = () => {
+    console.log("on date changed");
+  };
 
   return (
     <>
@@ -80,33 +106,26 @@ export default function Settlements() {
               <Box className="flx_log_input">
                 <Box component="form">
                   <Box className="date_min_prnt">
-                    <DateRangePicker
-                      initialSettings={{
-                        startDate: "1/1/2014",
-                        endDate: "3/1/2014",
-                      }}
-                      onEvent={handleEvent}
-                    >
-                      <button className="def_date_pickr">
-                        {moment(fromDate).format("LL")}
-                        &nbsp; - &nbsp;
-                        {moment(toDate).format("LL")}
-                        <KeyboardArrowDownIcon />
-                      </button>
-                    </DateRangePicker>
+                    <FormControl className="def_selct">
+                      <DatePicker
+                        className="user-input"
+                        selected={startDate}
+                        onChange={handleOnChanged}
+                        onSelect={handleDateSelected}
+                      />
+                    </FormControl>
                     <Box className="selct_minbx mrg_sp">
                       <FormControl className="def_selct">
                         <Select
-                          value={""}
+                          value={selectedCurrency}
                           onChange={handleChange}
-                          displayEmpty
+                          displayEmpty={true}
                           inputProps={{ "aria-label": "Without label" }}
                           className="selct"
                         >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {currencyList.map((item) => (
+                            <MenuItem value={item.id}>{item.currency}</MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Box>

@@ -1,5 +1,5 @@
 import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
-import { generateUrl } from "@/helper/_api_wrapper";
+import { deleteRecord, generateUrl } from "@/helper/_api_wrapper";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Typography } from "@mui/material";
@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
           <Button className="edt_btn_ic">
             <CreateIcon />
           </Button>
-          <Button className="edt_btn_ic delet_btn_ic">
+          <Button id={"delete"} className="edt_btn_ic delet_btn_ic">
             <DeleteIcon />
           </Button>
         </div>
@@ -34,9 +34,34 @@ export default function SettlementsTable(props: any) {
   //pop//
   const [open, setOpen] = useState(false);
   const [rows, setRows] = useState([]);
+  const [selectedRow, setSelectedRow] = useState<string>("");
+
+  const openConfirmationDialog = (params: any, event: any) => {
+    const getActionByElementId = document.getElementById("delete");
+    if (getActionByElementId?.id === "delete") {
+      setSelectedRow(params.id);
+      setOpen(true);
+    }
+  };
+
+
+  const deleteSettlements = () => {
+    deleteRecord(
+      endpointUrls[EndpointUrl.DELETE_AGENT_SETTLEMENT].replace(
+        ":id",
+        selectedRow
+      )
+    )
+      .then((res) => {
+        setOpen(false);
+        getSettlementsRecord();
+      })
+      .catch((error) => {
+        setOpen(false);
+      });
+  };
 
   useEffect(() => {
-    console.log("get records settlement");
     getSettlementsRecord();
   }, [props.filters]);
 
@@ -44,13 +69,8 @@ export default function SettlementsTable(props: any) {
     getRecords(
       generateUrl(endpointUrls[EndpointUrl.AGENT_SETTLEMENTS], props.filters)
     ).then((response) => {
-      console.log("response::", response);
       setRows(response);
     });
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
   };
 
   const handleClose = () => {
@@ -61,12 +81,11 @@ export default function SettlementsTable(props: any) {
       <Box className="data_tabal_def_min">
         <Box className="tabl_p_btn">
           <Typography>Settlements</Typography>
-          {/* <Button onClick={handleClickOpen}> Delete</Button> */}
-          {/* <Button>Upload Report</Button> */}
         </Box>
         <div style={{ height: 368, width: "100%" }} className="data_tabal_def">
           <DataGrid
             rows={rows}
+            onRowClick={openConfirmationDialog}
             columns={columns}
             initialState={{
               pagination: {
@@ -74,7 +93,6 @@ export default function SettlementsTable(props: any) {
               },
             }}
             pageSizeOptions={[5, 10]}
-            // checkboxSelection
           />
         </div>
       </Box>
@@ -97,7 +115,9 @@ export default function SettlementsTable(props: any) {
                   Are you sure you want to delete ?
                 </Typography>
 
-                <Button className="def_btn Delete">Delete</Button>
+                <Button className="def_btn Delete" onClick={deleteSettlements}>
+                  Delete
+                </Button>
               </Box>
             </Box>
           </Box>

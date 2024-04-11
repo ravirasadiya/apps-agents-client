@@ -15,6 +15,8 @@ export default function PlayerResults() {
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
+
+  const onFilterChanged = () => {};
   return (
     <Layout>
       <Head>
@@ -48,7 +50,7 @@ export default function PlayerResults() {
             </FormControl>
           </Box>
 
-          <DateAndSelect />
+          <DateAndSelect onFilterChange={onFilterChanged} />
 
           <Grid container spacing={[2, 3, 3]} className="selct_grid">
             <Grid item xs={12} sm={6} md={6} xl={4}>

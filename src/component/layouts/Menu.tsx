@@ -25,7 +25,7 @@ export default function Menu() {
                 className={submenu.className}
                 onClick={() => handleActive(submenu)}
               >
-                <Link prefetch={true} href={submenu.url + "?type=" + item.key}>
+                <Link href={submenu.url + "?type=" + item.key}>
                   {submenu.title}
                 </Link>
                 {/* <Link href={submenu.url.toString()}>{submenu.title}</Link> */}

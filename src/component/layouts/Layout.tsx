@@ -61,7 +61,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const loggedOut = () => {
     clearLocalStorage(LocalStorageKeys.ACCESS_TOKEN);
     clearLocalStorage(LocalStorageKeys.REFRESH_TOKEN);
-    _router.push("/login");
+    _router.replace("/login");
   };
 
   return (

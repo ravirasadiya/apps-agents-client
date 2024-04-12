@@ -6,6 +6,7 @@ import {
   currentDateInFormat,
   getDateOfBeforeOneMonthInFormat,
 } from "@/utils/get-date";
+import { Filters } from "./DateAndSelect";
 
 const columns: GridColDef[] = [
   { field: "user", headerName: "Player", width: 250 },
@@ -17,65 +18,27 @@ const columns: GridColDef[] = [
   { field: "_agent_earn", headerName: "Agent earnings", width: 270 },
 ];
 
-// const rows = [
-//   {
-//     id: 957072,
-//     profitloss: "$ 0.00",
-//     rake: "$ 0.00",
-//     rakeback: "$ 0.00",
-//     rebatefive: "$ 0.00",
-//     agentearnings: "$ 0.00",
-//   },
-//   {
-//     id: 957072,
-//     profitloss: "$ 0.00",
-//     rake: "$ 0.00",
-//     rakeback: "$ 0.00",
-//     rebatefive: "$ 0.00",
-//     agentearnings: "$ 0.00",
-//   },
-//   {
-//     id: 957072,
-//     profitloss: "$ 0.00",
-//     rake: "$ 0.00",
-//     rakeback: "$ 0.00",
-//     rebatefive: "$ 0.00",
-//     agentearnings: "$ 0.00",
-//   },
-//   {
-//     id: 957072,
-//     profitloss: "$ 0.00",
-//     rake: "$ 0.00",
-//     rakeback: "$ 0.00",
-//     rebatefive: "$ 0.00",
-//     agentearnings: "$ 0.00",
-//   },
-//   {
-//     id: 957072,
-//     profitloss: "$ 0.00",
-//     rake: "$ 0.00",
-//     rakeback: "$ 0.00",
-//     rebatefive: "$ 0.00",
-//     agentearnings: "$ 0.00",
-//   },
-// ];
-
-export default function PlayerResultsTabal() {
+export default function PlayerResultsTable(
+  props: Readonly<{ filters: Filters | undefined }>
+) {
   const [rows, setRows] = useState([]);
   const componentMounted = useRef(false);
 
+  const { filters } = props;
+
   useEffect(() => {
-    if (!componentMounted.current) {
-      getPlayerIncomeResults();
-      componentMounted.current = true;
-    }
-  });
+    getPlayerIncomeResults();
+  }, [filters?.club]);
 
   function getPlayerIncomeResults() {
     getRecords(
       endpointUrls[EndpointUrl.AGENT_PLAYER_RESULTS]
-        .replace(":fromDate", getDateOfBeforeOneMonthInFormat())
-        .replace(":toDate", currentDateInFormat())
+        .replace(
+          ":fromDate",
+          filters?.startDate || getDateOfBeforeOneMonthInFormat()
+        )
+        .replace(":toDate", filters?.endDate || currentDateInFormat())
+        .replace(":club", filters?.club || "")
     ).then((response) => {
       let { results } = response ?? { results: [] };
       results = results.map((p: any, index: number) => ({

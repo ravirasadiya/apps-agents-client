@@ -101,7 +101,7 @@ export const generateUrl = (url: string, filters?: Filters) => {
   const generateUrlEndPoint = () => {
     const fromDate = filters?.startDate ?? getDateOfBeforeOneMonthInFormat();
     const toDate = filters?.endDate ?? currentDateInFormat();
-    const club = filters?.club ?? "KOBERGS";
+    const club = filters?.club ?? "";
     return url
       ?.replace(":fromDate", fromDate)
       ?.replace(":toDate", toDate)

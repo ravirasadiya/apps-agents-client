@@ -1,13 +1,16 @@
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { Box, Button, Typography } from "@mui/material";
+import { agentResultsColumns } from "@/helper/columns";
+import { useEffect, useState } from "react";
 import { EndpointUrl, endpointUrls, getRecords } from "@/helper";
 import { generateUrl } from "@/helper/_api_wrapper";
-import { agentReportsGrid } from "@/helper/columns";
-import { Box, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+import { AgentReportResultTable } from "@/types/agent-report-result";
+import { Filters } from "../dashboard/DateAndSelect";
 
-export default function ReportsAgentsOne(props: any) {
-  const [rows, setRows] = useState([]);
-  const columns = agentReportsGrid;
+export default function ResultsTable(props: Readonly<{ filters: Filters }>) {
+  const columns = agentResultsColumns;
+  const [rows, setRows] = useState<AgentReportResultTable[]>([]);
+
   useEffect(() => {
     if (props.filters?.club) {
       getSettlementsRecord();
@@ -16,7 +19,7 @@ export default function ReportsAgentsOne(props: any) {
 
   const getSettlementsRecord = () => {
     getRecords(
-      generateUrl(endpointUrls[EndpointUrl.AGENT_REPORTS], props.filters)
+      generateUrl(endpointUrls[EndpointUrl.AGENT_REPORTS_RESULT], props.filters)
     ).then((response) => {
       const { results } = response || { results: [] };
       setRows(results);
@@ -24,10 +27,10 @@ export default function ReportsAgentsOne(props: any) {
   };
 
   return (
-    <Box className="data_tabal_def_min">
+    <Box className="data_tabal_def_min mrgn_for">
       <Box className="tabl_p_btn">
-        <Typography>Reports</Typography>
-        {/* <Button>Upload Report</Button> */}
+        <Typography>Results</Typography>
+        <Button>Upload Report</Button>
       </Box>
       <div style={{ height: 368, width: "100%" }} className="data_tabal_def">
         <DataGrid

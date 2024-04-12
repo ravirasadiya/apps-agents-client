@@ -4,7 +4,6 @@ export enum LocalStorageKeys {
   ACCESS_TOKEN = "accessToken",
   REFRESH_TOKEN = "refreshToken",
   PROFILE = "profileData",
-  filterProperties = "filterProperties",
 }
 
 export const setLocalStorage = (key: string, data: any) => {

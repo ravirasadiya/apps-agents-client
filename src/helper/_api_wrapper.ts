@@ -99,18 +99,9 @@ export const deleteRecord = async (apiUrl: string) => {
 
 export const generateUrl = (url: string, filters?: Filters) => {
   const generateUrlEndPoint = () => {
-    const getLocalStorageFilters = JSON.parse(
-      getLocalStorage(LocalStorageKeys.filterProperties)
-    );
-    const fromDate =
-      filters?.startDate ??
-      getLocalStorageFilters.startDate ??
-      getDateOfBeforeOneMonthInFormat();
-    const toDate =
-      filters?.endDate ??
-      getLocalStorageFilters.endDate ??
-      currentDateInFormat();
-    const club = filters?.club ?? getLocalStorageFilters.club ?? "KOBERGS";
+    const fromDate = filters?.startDate ?? getDateOfBeforeOneMonthInFormat();
+    const toDate = filters?.endDate ?? currentDateInFormat();
+    const club = filters?.club ?? "KOBERGS";
     return url
       ?.replace(":fromDate", fromDate)
       ?.replace(":toDate", toDate)

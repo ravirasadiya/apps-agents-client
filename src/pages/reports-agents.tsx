@@ -5,10 +5,13 @@ import { Box, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ReportsAgentsOne from "@/component/ReportsAgents/ReportsAgentsOneTabal";
 import ReportsAgentsTwoTabl from "@/component/ReportsAgents/ReportsAgentsTwoTabl";
-import DateAndSelect from "@/component/dashboard/DateAndSelect";
+import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 
 export default function ReportsAgents() {
-  const onFilterChanged = () => {};
+  const [filters, setFilters] = useState<Filters>();
+  const onFilterChanged = (filter: Filters) => {
+    setFilters(filter);
+  };
 
   return (
     <>
@@ -25,7 +28,7 @@ export default function ReportsAgents() {
               Reports (for agents)
             </Typography>
             <DateAndSelect onFilterChange={onFilterChanged} />
-            <ReportsAgentsOne />
+            <ReportsAgentsOne filters={filters} />
             <ReportsAgentsTwoTabl />
           </Box>
         </div>

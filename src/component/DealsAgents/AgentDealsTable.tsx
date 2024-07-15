@@ -26,7 +26,7 @@ const rows = [
     { id: 2100559, date: '12/2/2024', club: '137795', nickname: 'Korill', rakeback: '$ 0.000', rebate: '$ 0.000', action: <div>11</div>,  },
 ];
 
-export default function DealsAgentsTabal() {
+export default function AgentDealsTable() {
     return (
         <Box className='data_tabal_def_min mrgn_for'>
             <Box className='tabl_p_btn'>
@@ -43,7 +43,6 @@ export default function DealsAgentsTabal() {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
-                // checkboxSelection
                 />
             </div>
         </Box>

@@ -20,6 +20,7 @@ export enum EndpointUrl {
   AGENT_PLAYER_LIST = 10, // create settlement player list dropdown
   AGENT_REPORTS = 11, // client's report table
   AGENT_CREATE_SETTLEMENT = 12, // create settlement of agent
+  AGENT_REPORTS_RESULT = 13, // create a reports result in the agent
 }
 
 // Define the corresponding URLs separately
@@ -36,8 +37,9 @@ export const endpointUrls: Record<EndpointUrl, string> = {
   [EndpointUrl.DELETE_AGENT_SETTLEMENT]: `${domainWithOutVersion}/views/agents-settlements/delete/:id`,
   [EndpointUrl.AGENT_CURRENCY_LIST]: `${domainWithOutVersion}/views/agents-settlements/currency-list/`,
   [EndpointUrl.AGENT_PLAYER_LIST]: `${domainWithOutVersion}/views/agents-deals/players-list/`,
-  [EndpointUrl.AGENT_REPORTS]: `${domainWithOutVersion}/views/agents-reports/reports-list/?from_date=2024-03-17&to_date=2024-04-20`,
+  [EndpointUrl.AGENT_REPORTS]: `${domainWithOutVersion}/views/agents-reports/reports-list/?from_date=:fromDate&to_date=:toDate&club=:club`,
   [EndpointUrl.AGENT_CREATE_SETTLEMENT]: `${domainWithOutVersion}/views/agents-settlements/create-settlement/`,
+  [EndpointUrl.AGENT_REPORTS_RESULT]: `${domainWithOutVersion}/views/agents-reports/results-list/?from_date=:fromDate&to_date=:toDate&club=:club`,
 };
 
 export default { EndpointUrl, endpointUrls };

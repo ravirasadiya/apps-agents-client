@@ -5,7 +5,7 @@ import { Box, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import DateAndSelect, { Filters } from "@/component/dashboard/DateAndSelect";
 import ClubResultsTabal from "@/component/dashboard/ClubResultsTabal";
-import PlayerResultsTabal from "@/component/dashboard/PlayerResultsTabal";
+import PlayerResultsTable from "@/component/dashboard/PlayerResultsTable";
 import NicknameResultsTabal from "@/component/dashboard/NicknameResultsTabal";
 import { useRouter } from "next/router";
 import { useToken } from "../hooks/get-user-login-status";
@@ -51,42 +51,43 @@ export default function Dashboard() {
   const agentEarningsArray: AgentAggregateRecord[] = [];
 
   useEffect(() => {
-    console.log("dashboard aggregate result", dashboardAggregateResult);
-    if (dashboardAggregateResult.length) {
-      setDashboardAggregateResult([]);
+    if (filters?.club) {
+      getPlayerIncome();
     }
-    getPlayerIncome();
   }, [filters]);
 
   const getPlayerIncome = () => {
-    getRecords(generateUrl(endpointUrls[EndpointUrl.AGENT_RESULTS]))
+    const createArray = (key: string, value: string) => {
+      if (key.startsWith("_agent_")) {
+        return key.includes("_agent_earnings")
+          ? agentEarningsArray
+          : agentIncomeArray;
+      } else if (key.startsWith("_player")) {
+        return playerResultsArray;
+      }
+    };
+
+    const pushToArray = (
+      array: AgentAggregateRecord[],
+      key: string,
+      value: string
+    ) => {
+      array.push({
+        title: key,
+        price: value,
+        currency: "$",
+      });
+    };
+
+    const processKeyValue = (key: string, value: string) => {
+      const array: AgentAggregateRecord[] = createArray(key, value) || [];
+      pushToArray(array, key, value);
+    };
+
+    getRecords(generateUrl(endpointUrls[EndpointUrl.AGENT_RESULTS], filters))
       .then((response: AgentResults) => {
         for (const [key, value] of Object.entries(response)) {
-          if (key.startsWith("_agent_")) {
-            if (
-              key === "_agent_earnings_rb" ||
-              key === "_agent_earnings_rebate" ||
-              key === "_agent_earnings"
-            ) {
-              agentEarningsArray.push({
-                title: key,
-                price: value,
-                currency: "$",
-              });
-            } else {
-              agentIncomeArray.push({
-                title: key,
-                price: value,
-                currency: "$",
-              });
-            }
-          } else if (key.startsWith("_player")) {
-            playerResultsArray.push({
-              title: key,
-              price: value,
-              currency: "$",
-            });
-          }
+          processKeyValue(key, value || "0.00");
         }
 
         if (agentIncomeArray.length > 0) {
@@ -107,8 +108,6 @@ export default function Dashboard() {
         setDashboardAggregateResult(resultArray);
       })
       .catch((e) => {
-        // [TODO] set the mock data for the response of the agency results data
-        // setPlayerIncomeData(mockPlayerIncome);
         console.log("error while fetching agent results records:", e);
       });
   };
@@ -146,7 +145,7 @@ export default function Dashboard() {
             <PlayerIncome key={item.title} data={item} />
           ))}
           {/** Players Income End */}
-          <PlayerResultsTabal />
+          <PlayerResultsTable filters={filters} />
           <ClubResultsTabal />
           {/* <NicknameResultsTabal /> */}
         </Box>

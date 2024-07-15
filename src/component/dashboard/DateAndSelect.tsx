@@ -60,19 +60,24 @@ export default function DateAndSelect(props: Readonly<DateAndSelectProps>) {
   const updateFilters = (filters: Filters) => {
     setFilters(filters);
     props.onFilterChange(filters);
-    setLocalStorage(LocalStorageKeys.filterProperties, filters);
   };
 
   useEffect(() => {
-    const getLocalStorageFilters = JSON.parse(
-      getLocalStorage(LocalStorageKeys.filterProperties)
-    );
     if (!componentMounted.current) {
       getRecords(endpointUrls[EndpointUrl.CLUB_LIST])
         .then((response: ClubResponse) => {
           const { results } = response ?? { count: 0, results: [] };
           setClubs(results);
-          setSelectedClub(getLocalStorageFilters.club || results?.[0]?.club);
+          const setDefaultClub = results?.[0]?.club;
+          setSelectedClub(setDefaultClub);
+          setFilters({
+            ...filters,
+            club: setDefaultClub,
+          });
+          props.onFilterChange({
+            ...filters,
+            club: setDefaultClub,
+          });
         })
         .catch((e: any) => {
           console.log("ERROR...", e);
